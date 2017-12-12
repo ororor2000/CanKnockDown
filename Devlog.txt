@@ -1,0 +1,9 @@
+To do:
+Extract from old game:
+-ball object and textures
+-shelf object and textures
+-can object (take old textures or make new)
+Add:
+-object tags
+-level advancement
+-sounds
