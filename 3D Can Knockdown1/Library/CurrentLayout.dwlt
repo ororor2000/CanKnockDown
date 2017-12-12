@@ -109,7 +109,7 @@ MonoBehaviour:
   m_MinSize: {x: 683, y: 492}
   m_MaxSize: {x: 14004, y: 14042}
   vertical: 0
-  controlID: 9
+  controlID: 111
 --- !u!114 &6
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -294,10 +294,10 @@ MonoBehaviour:
   m_ZoomArea:
     m_HRangeLocked: 0
     m_VRangeLocked: 0
-    m_HBaseRangeMin: -627
-    m_HBaseRangeMax: 627
-    m_VBaseRangeMin: -295.5
-    m_VBaseRangeMax: 295.5
+    m_HBaseRangeMin: -400
+    m_HBaseRangeMax: 400
+    m_VBaseRangeMin: -640
+    m_VBaseRangeMax: 640
     m_HAllowExceedBaseRangeMin: 1
     m_HAllowExceedBaseRangeMax: 1
     m_VAllowExceedBaseRangeMin: 1
@@ -316,7 +316,7 @@ MonoBehaviour:
       y: 17
       width: 1254
       height: 591
-    m_Scale: {x: 1, y: 1}
+    m_Scale: {x: 0.46171874, y: 0.46171874}
     m_Translation: {x: 627, y: 295.5}
     m_MarginLeft: 0
     m_MarginRight: 0
@@ -324,12 +324,12 @@ MonoBehaviour:
     m_MarginBottom: 0
     m_LastShownAreaInsideMargins:
       serializedVersion: 2
-      x: -627
-      y: -295.5
-      width: 1254
-      height: 591
+      x: -1357.9696
+      y: -640
+      width: 2715.9392
+      height: 1280
     m_MinimalGUI: 1
-  m_defaultScale: 1
+  m_defaultScale: 0.46171874
   m_TargetTexture: {fileID: 0}
   m_CurrentColorSpace: 0
   m_LastWindowPixelSize: {x: 1254, y: 608}
@@ -364,9 +364,9 @@ MonoBehaviour:
     height: 608
   m_TreeViewState:
     scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: 
+    m_SelectedIDs: 04060000
     m_LastClickedID: 0
-    m_ExpandedIDs: ba52feffde80feffc015ffffb4f8ffff00000000
+    m_ExpandedIDs: 9ef7ffff00000000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -448,7 +448,7 @@ MonoBehaviour:
   m_Rotation:
     m_Target: {x: -0.14425394, y: -0.17183304, z: 0.025445173, w: -0.9741749}
     speed: 2
-    m_Value: {x: -0.14425394, y: -0.17183304, z: 0.025445173, w: -0.9741749}
+    m_Value: {x: -0.14425394, y: -0.17183305, z: 0.025445174, w: -0.974175}
   m_Size:
     m_Target: 43.625664
     speed: 2
@@ -502,19 +502,19 @@ MonoBehaviour:
     m_ShowAllHits: 0
     m_SearchArea: 0
     m_Folders:
-    - Assets
+    - Assets/Scripts
   m_ViewMode: 1
   m_StartGridSize: 96
   m_LastFolders:
-  - Assets
+  - Assets/Scripts
   m_LastFoldersGridSize: 96
-  m_LastProjectPath: C:\Users\USER\Desktop\Can Knock Down\CanKnockDown\3D Can Knockdown1
+  m_LastProjectPath: D:\OneDrive\Game Development\Can\CanKnockDown\3D Can Knockdown1
   m_IsLocked: 0
   m_FolderTreeState:
     scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: 06390000
-    m_LastClickedID: 14598
-    m_ExpandedIDs: 00000000c031000006390000343a00005c3a0000783a0000ae3a0000023b00003a3b0000383c0000403c0000b83c0000f63c00007c3e00008e3e0000ba3e0000e23e00007c3f000054400000c240000094420000b8420000f042000018430000a44300002c4500002e45000000ca9a3bffffff7f
+    m_SelectedIDs: 90290000
+    m_LastClickedID: 10640
+    m_ExpandedIDs: 00000000e2280000ea290000ec290000ee290000f0290000f2290000f4290000f6290000f8290000fa290000fc290000fe290000002a0000022a0000042a0000062a0000082a00000a2a00000c2a00000e2a0000102a0000122a0000142a0000162a0000182a00001a2a000000ca9a3bffffff7f
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -542,7 +542,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 00000000c031000006390000343a00005c3a0000783a0000ae3a0000023b00003a3b0000b83c0000f63c00007c3e0000ba3e0000e23e00007c3f0000c240000094420000b8420000f0420000a44300002c4500002e450000
+    m_ExpandedIDs: 00000000e2280000ea290000ec290000ee290000f0290000f2290000f4290000f6290000f8290000fa290000fc290000fe290000002a0000022a0000042a0000062a0000082a00000a2a00000c2a00000e2a0000102a0000122a0000142a0000162a0000182a00001a2a0000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
