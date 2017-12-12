@@ -30,7 +30,6 @@ public class ThrowBall : MonoBehaviour
             if (Input.GetTouch(0).phase == TouchPhase.Began)
             {
                 begining = Input.GetTouch(0);
-                Debug.Log("Began: " + begining.position);
 
                 startTime = Time.time;
             }
@@ -38,7 +37,6 @@ public class ThrowBall : MonoBehaviour
             if (Input.GetTouch(0).phase == TouchPhase.Ended)
             {
                 end = Input.GetTouch(0);
-                Debug.Log("End: " + end.position);
 
                 deltaTime = Time.time - startTime;
             }
@@ -50,7 +48,7 @@ public class ThrowBall : MonoBehaviour
         {
             Rigidbody rigid = ball.GetComponent<Rigidbody>();
 
-            float angle = Vector3.Angle(begining.position, end.position);
+            float angle = Vector3.Angle(begining.position, end.position) * Mathf.Deg2Rad;
             float dis = Vector3.Distance(begining.position, end.position);
 
             float velocity = dis / deltaTime;
@@ -58,7 +56,9 @@ public class ThrowBall : MonoBehaviour
             float vx = velocity * (float)Math.Cos(angle);
             float vy = velocity * (float)Math.Sin(angle);
 
-            Vector3 velocityVector = new Vector3(vx, vy);
+            Vector3 velocityVector = new Vector3(0, vy, vx);
+
+            Debug.Log("Vx: " + vx + " Vy: " + vy + " Angle(rad): " + angle + " V: " + velocity);
 
             velocityVector *= Time.deltaTime;
 
