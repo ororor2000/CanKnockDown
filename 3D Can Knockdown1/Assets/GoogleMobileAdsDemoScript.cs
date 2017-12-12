@@ -21,13 +21,13 @@ public class GoogleMobileAdsDemoScript : MonoBehaviour
 	
 	public void unityadss()
 	{
-		Advertisement.Show ();
+		//Advertisement.Show ();
 	}
 	
 	
 	void Start()
 	{
-		Advertisement.Initialize ("102346",false);
+		//Advertisement.Initialize ("102346",false);
 		RequestBanner();
 		bannerView.Show();
 		Chartboost.cacheInterstitial(CBLocation.Default);

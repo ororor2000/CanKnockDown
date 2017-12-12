@@ -13,7 +13,7 @@ public class HeyzapPostBuild : MonoBehaviour
     [PostProcessBuild(101)]
     private static void onPostProcessBuildPlayer( BuildTarget target, string pathToBuiltProject )
     {
-        if (target == BuildTarget.iPhone) {
+        if (target == BuildTarget.iOS) {
             UnityEngine.Debug.Log ("Heyzap: started post-build script");
 
             // grab the path to the postProcessor.py file
