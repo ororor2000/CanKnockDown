@@ -15,16 +15,10 @@ public class ThrowBall : MonoBehaviour
     private float startTime;
     private float deltaTime;
 
-    private bool freeze;
-    private Vector3 start;
-    private bool up;
-
     //Sets the ball object
     void Start()
     {
-        freeze = true;
         ball = gameObject;
-        up = true;
     }
 
     //Updates every frame
@@ -33,13 +27,8 @@ public class ThrowBall : MonoBehaviour
         if (Input.touchCount > 0)
         {
             TouchControl();
-            freeze = false;
         }
         ThrowControl();
-        if (freeze)
-        {
-            Float();
-        }
     }
 
     private void TouchControl()
@@ -56,26 +45,6 @@ public class ThrowBall : MonoBehaviour
             end = Input.GetTouch(0);
 
             deltaTime = Time.time - startTime;
-        }
-    }
-
-    private void Float()
-    {
-        if (up)
-        {
-            transform.Translate(Vector3.up * (Time.deltaTime / 2 + Math.Abs(transform.position.y) + 0.05f) / 20);
-            if (transform.position.y - start.y >= 1)
-            {
-                up = false;
-            }
-        }
-        else
-        {
-            transform.Translate(Vector3.down * (Time.deltaTime / 2 + Math.Abs(transform.position.y) + 0.05f) / 20);
-            if (transform.position.y - start.y <= -1)
-            {
-                up = true;
-            }
         }
     }
 
