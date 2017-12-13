@@ -1,6 +1,6 @@
 fileFormatVersion: 2
-guid: 625ebbde5df5b374a8cf86f6e2286829
-timeCreated: 1513179859
+guid: 063b41ccd69abdd4aa1918f677e4a8ba
+timeCreated: 1513184867
 licenseType: Free
 ModelImporter:
   serializedVersion: 22
@@ -9,14 +9,13 @@ ModelImporter:
     400000: //RootNode
     2300000: //RootNode
     3300000: //RootNode
-    4300000: polySurface2
-    9500000: //RootNode
+    4300000: node_id6
   externalObjects:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: lambert4
-    second: {fileID: 2100000, guid: b56bf5ce7ac745743951b0613542c1c7, type: 2}
+      name: Material_110
+    second: {fileID: 2100000, guid: b281581e7ac87334d973acdae90c42fa, type: 2}
   materials:
     importMaterials: 1
     materialName: 0
@@ -88,7 +87,7 @@ ModelImporter:
     hasExtraRoot: 0
     skeletonHasParents: 1
   lastHumanDescriptionAvatarSource: {instanceID: 0}
-  animationType: 2
+  animationType: 0
   humanoidOversampling: 1
   additionalBone: 0
   userData: 
