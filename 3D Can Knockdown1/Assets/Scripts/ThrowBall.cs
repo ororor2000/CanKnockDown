@@ -3,6 +3,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class ThrowBall : MonoBehaviour
 {
@@ -19,17 +21,52 @@ public class ThrowBall : MonoBehaviour
     private Vector3 start;
     private bool up;
 
+    //only for demo for shay ///***TO BE DELETED***\\\\
+    public Text points_txt;
+    private int points = 0;
+
+    private Vector3 ballStartPos;
+    private int ballsCount = 0;
+
+
     //Sets the ball object
     void Start()
     {
         freeze = true;
         ball = gameObject;
         up = true;
+
+        ballStartPos = transform.position;
+    }
+
+    public void RestartScene()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
     //Updates every frame
     void Update()
-    {
+    {            
+        if (ball.transform.position.y < -30)
+        {
+            //Application.LoadLevel(Application.loadedLevel);
+        }
+
+        if (transform.position.y < -30)
+        {
+            Instantiate(ball, ballStartPos, Quaternion.Euler(0,0,0));
+
+            Destroy(gameObject);
+            ballsCount += 1;
+        }
+
+        if (CheckFall())
+        {
+            points += 1;
+        }
+
+        points_txt.text = "Score: " + points;
+
         if (Input.touchCount > 0)
         {
             TouchControl();
@@ -42,6 +79,22 @@ public class ThrowBall : MonoBehaviour
         }
     }
 
+    public bool CheckFall()
+    {
+        var arr = GameObject.FindGameObjectsWithTag("Can");
+
+        for (int i = 0; i < arr.Length; i++)
+        {
+            if (arr[i].transform.position.y < -30)
+            {
+                Destroy(arr[i]);
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     private void TouchControl()
     {
         if (Input.GetTouch(0).phase == TouchPhase.Began)
@@ -51,7 +104,7 @@ public class ThrowBall : MonoBehaviour
             startTime = Time.time;
         }
 
-        if (Input.GetTouch(0).phase == TouchPhase.Ended)
+        if (Input.GetTouch(0).phase == TouchPhase.Ended || Input.GetMouseButtonUp(0))
         {
             end = Input.GetTouch(0);
 
@@ -63,7 +116,7 @@ public class ThrowBall : MonoBehaviour
     {
         if (up)
         {
-            transform.Translate(Vector3.up * (Time.deltaTime / 2 + Math.Abs(transform.position.y) + 0.05f) / 20);
+            //transform.Translate(Vector3.up * (Time.deltaTime / 2 + Math.Abs(transform.position.y) + 0.05f) / 20);
             if (transform.position.y - start.y >= 1)
             {
                 up = false;
@@ -71,7 +124,7 @@ public class ThrowBall : MonoBehaviour
         }
         else
         {
-            transform.Translate(Vector3.down * (Time.deltaTime / 2 + Math.Abs(transform.position.y) + 0.05f) / 20);
+            //transform.Translate(Vector3.down * (Time.deltaTime / 2 + Math.Abs(transform.position.y) + 0.05f) / 20);
             if (transform.position.y - start.y <= -1)
             {
                 up = true;
@@ -92,15 +145,15 @@ public class ThrowBall : MonoBehaviour
             float velocity = dis / deltaTime;
 
             ///Way 1:
-            //float vx = velocity * (float)Math.Cos(angle);
-            //float vy = velocity * (float)Math.Sin(angle);
+            float vx = velocity * (float)Math.Cos(angle);
+            float vy = velocity * (float)Math.Sin(angle);
 
             ///Test this please, I still cant
             float deltax = end.position.x - beginning.position.x;
             float deltay = end.position.y - beginning.position.y;
 
-            float vx = velocity * deltax;
-            float vy = velocity * deltay;
+            //float vx = velocity * deltax;
+            //float vy = velocity * deltay;
 
             Vector3 velocityVector = new Vector3(0, vy, vx);
 
