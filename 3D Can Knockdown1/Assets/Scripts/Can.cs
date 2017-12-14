@@ -4,13 +4,12 @@ using UnityEngine;
 
 public class Can : MonoBehaviour
 {
-    private void OnTriggerEnter(Collider other)
+    private void Update()
     {
-        if (other.tag.Equals("GameController"))
+        if (transform.position.y < -20)
         {
+            GameManager.Score += 1;
             Destroy(gameObject);
-            Debug.Log("Fell");
-            GameManager.score += 1;
         }
     }
 }

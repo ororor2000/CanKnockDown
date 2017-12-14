@@ -4,5 +4,8 @@ using UnityEngine;
 
 public class BackgroundControl : MonoBehaviour
 {
-    //Add later misc code
+    private void Update()
+    {
+        
+    }
 }

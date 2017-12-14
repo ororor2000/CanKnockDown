@@ -14,15 +14,11 @@ public class ThrowBall : MonoBehaviour
     private bool clearToThrow = true;
     private Vector3 ballStartPos;
     private GameObject ball;
+    private Rigidbody rigid;
 
     private float startTime;
     private float deltaTime;
 
-    private bool freeze;
-    private Vector3 start;
-    private bool up;
-
-    private bool ballRePos = true;
 
     //DEBUG
     private Vector3 mouse_start;
@@ -33,8 +29,8 @@ public class ThrowBall : MonoBehaviour
     void Start()
     {
         ball = gameObject;
-        ballStartPos = ball.transform.position;
-        up = true;
+        ballStartPos = transform.position;
+        rigid = GetComponent<Rigidbody>();
     }
 
     public void RestartScene()
@@ -47,7 +43,7 @@ public class ThrowBall : MonoBehaviour
     {
         //TODO
         /*
-        if (CheckWin())
+        if (CheckWin()) ///In background control?
         {
             Print("You Won");
             EndGame And Move To Next Level
@@ -59,10 +55,10 @@ public class ThrowBall : MonoBehaviour
         }
         */
 
-        if (ball.transform.position.y < -10)
-        {            
-            GameManager.ballCount += 1;
-            //RestartScene();
+        if (ball.transform.position.y < -17)
+        {
+            GameManager.BallCount += 1;
+            //RestartScene(); (why?)
             RespawnBall();
         }
         else if (clearToThrow)
@@ -77,26 +73,23 @@ public class ThrowBall : MonoBehaviour
             {
                 mouse_start = Input.mousePosition;
                 startTime = Time.time;
-                Debug.Log("Down: " + mouse_start);
             }
 
             if (Input.GetMouseButtonUp(0))
             {
                 mouse_end = Input.mousePosition;
                 deltaTime = Time.time - startTime;
-                Debug.Log("UP: " + mouse_end);
             }
-
             ThrowControl();
         }
 
-    }   
+    }
 
     private void TouchControl()
     {
         if (Input.GetTouch(0).phase == TouchPhase.Began)
         {
-            beginning = Input.GetTouch(0);            
+            beginning = Input.GetTouch(0);
             startTime = Time.time;
         }
 
@@ -111,31 +104,28 @@ public class ThrowBall : MonoBehaviour
     {
         if (clearToThrow && mouse_start != Vector3.zero && mouse_end != Vector3.zero) // && beginning.position != Vector2.zero && end.position != Vector2.zero)
         {
-            Rigidbody rigid = ball.GetComponent<Rigidbody>();
-            rigid.isKinematic = false;
-            rigid.velocity = Vector3.zero;;
-
             //float angle = Vector3.Angle(beginning.position, end.position) * Mathf.Deg2Rad;
             //float dis = Vector3.Distance(beginning.position, end.position);
-            Debug.Log("Down: " + mouse_start);
-            Debug.Log("UP: " + mouse_end);
-            Debug.Log("Time: " + deltaTime);
-            
-            float angle = Vector3.Angle(mouse_start, mouse_end) * Mathf.Deg2Rad;
-            float dis = Vector3.Distance(mouse_start, mouse_end);            
 
-            float velocity = dis / deltaTime;
-            
-            float vx = velocity * Mathf.Cos(angle);
-            float vy = velocity * Mathf.Sin(angle);                      
+            float disx = mouse_end.x - mouse_start.x;
+            float disy = mouse_end.y - mouse_start.y;
 
-            Vector3 velocityVector = new Vector3(0, vy, vx);
-            velocityVector *= Time.deltaTime;
+            float angle = Mathf.Atan(disy / disx);
+
+            float dis = Vector3.Distance(mouse_start, mouse_end);
+
+            float velocity = dis / deltaTime * Time.deltaTime;
+
+            float vx = velocity * Mathf.Cos(angle) * Mathf.Sign(disx);
+            float vy = Mathf.Abs(velocity * Mathf.Sin(angle));
+
+            Vector3 velocityVector = new Vector3(vx, vy, 30) / 2;
+
+            ResetValues();
 
             Debug.Log("Vector: " + velocityVector);
-            Debug.Log("Vx: " + vx + " Vy: " + vy + " Angle(rad): " + angle + " V: " + velocity);
-
-            rigid.velocity = velocityVector;            
+            rigid.velocity = velocityVector;
+            rigid.isKinematic = false;
 
             clearToThrow = false;
         }
@@ -143,14 +133,17 @@ public class ThrowBall : MonoBehaviour
 
     void RespawnBall()
     {
-        var rigid = ball.GetComponent<Rigidbody>();
-
         rigid.isKinematic = true;
         rigid.velocity = Vector3.zero;
 
         ball.transform.position = ballStartPos;
 
         clearToThrow = true;
+    }
 
+    private void ResetValues()
+    {
+        mouse_start = Vector3.zero;
+        mouse_end = Vector3.zero;
     }
 }
