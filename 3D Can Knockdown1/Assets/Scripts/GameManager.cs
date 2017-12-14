@@ -1,14 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
-    public Text score_txt;
+    public TextMeshProUGUI score_txt;
     private static int score = 0;
 
-    public Text ballCount_txt;
+    public TextMeshProUGUI ballCount_txt;
     private static int ballCount = 0;
 
     public static int Score
@@ -45,8 +46,13 @@ public class GameManager : MonoBehaviour
 
     // Update is called once per frame
     void Update()
-    {
+    {            
         score_txt.text = "Score: " + Score;
         ballCount_txt.text = "Ball Count: " + BallCount;
+
+        if (score == 5)
+        {
+            GetComponent<AudioSource>().Play();
+        }
     }
 }
