@@ -12,6 +12,7 @@ public class ThrowBall : MonoBehaviour
     private Touch end;
 
     private bool clearToThrow = true;
+    private Vector3 ballStartPos;
     private GameObject ball;
 
     private float startTime;
@@ -21,22 +22,19 @@ public class ThrowBall : MonoBehaviour
     private Vector3 start;
     private bool up;
 
-    //only for demo for shay ///***TO BE DELETED***\\\\
-    public Text points_txt;
-    private int points = 0;
+    private bool ballRePos = true;
 
-    private Vector3 ballStartPos;
-    private int ballsCount = 0;
+    //DEBUG
+    private Vector3 mouse_start;
+    private Vector3 mouse_end;
 
 
     //Sets the ball object
     void Start()
     {
-        freeze = true;
         ball = gameObject;
+        ballStartPos = ball.transform.position;
         up = true;
-
-        ballStartPos = transform.position;
     }
 
     public void RestartScene()
@@ -46,124 +44,113 @@ public class ThrowBall : MonoBehaviour
 
     //Updates every frame
     void Update()
-    {            
-        if (ball.transform.position.y < -30)
-        {
-            //Application.LoadLevel(Application.loadedLevel);
-        }
-
-        if (transform.position.y < -30)
-        {
-            Instantiate(ball, ballStartPos, Quaternion.Euler(0,0,0));
-
-            Destroy(gameObject);
-            ballsCount += 1;
-        }
-
-        if (CheckFall())
-        {
-            points += 1;
-        }
-
-        points_txt.text = "Score: " + points;
-
-        if (Input.touchCount > 0)
-        {
-            TouchControl();
-            freeze = false;
-        }
-        ThrowControl();
-        if (freeze)
-        {
-            Float();
-        }
-    }
-
-    public bool CheckFall()
     {
-        var arr = GameObject.FindGameObjectsWithTag("Can");
-
-        for (int i = 0; i < arr.Length; i++)
+        //TODO
+        /*
+        if (CheckWin())
         {
-            if (arr[i].transform.position.y < -30)
+            Print("You Won");
+            EndGame And Move To Next Level
+        }
+         * 
+        if (GameManager.ballCount > z) where z = predetermined number unique for a each level
+        {
+            //EndLevel() = Lost            
+        }
+        */
+
+        if (ball.transform.position.y < -10)
+        {            
+            GameManager.ballCount += 1;
+            //RestartScene();
+            RespawnBall();
+        }
+        else if (clearToThrow)
+        {
+
+            if (Input.touchCount > 0)
             {
-                Destroy(arr[i]);
-                return true;
+                //TouchControl();
             }
+
+            if (Input.GetMouseButtonDown(0))
+            {
+                mouse_start = Input.mousePosition;
+                startTime = Time.time;
+                Debug.Log("Down: " + mouse_start);
+            }
+
+            if (Input.GetMouseButtonUp(0))
+            {
+                mouse_end = Input.mousePosition;
+                deltaTime = Time.time - startTime;
+                Debug.Log("UP: " + mouse_end);
+            }
+
+            ThrowControl();
         }
 
-        return false;
-    }
+    }   
 
     private void TouchControl()
     {
         if (Input.GetTouch(0).phase == TouchPhase.Began)
         {
-            beginning = Input.GetTouch(0);
-
+            beginning = Input.GetTouch(0);            
             startTime = Time.time;
         }
 
         if (Input.GetTouch(0).phase == TouchPhase.Ended || Input.GetMouseButtonUp(0))
         {
             end = Input.GetTouch(0);
-
             deltaTime = Time.time - startTime;
-        }
-    }
-
-    private void Float()
-    {
-        if (up)
-        {
-            //transform.Translate(Vector3.up * (Time.deltaTime / 2 + Math.Abs(transform.position.y) + 0.05f) / 20);
-            if (transform.position.y - start.y >= 1)
-            {
-                up = false;
-            }
-        }
-        else
-        {
-            //transform.Translate(Vector3.down * (Time.deltaTime / 2 + Math.Abs(transform.position.y) + 0.05f) / 20);
-            if (transform.position.y - start.y <= -1)
-            {
-                up = true;
-            }
         }
     }
 
     private void ThrowControl()
     {
-        if (clearToThrow && beginning.position != Vector2.zero && end.position != Vector2.zero)
+        if (clearToThrow && mouse_start != Vector3.zero && mouse_end != Vector3.zero) // && beginning.position != Vector2.zero && end.position != Vector2.zero)
         {
             Rigidbody rigid = ball.GetComponent<Rigidbody>();
             rigid.isKinematic = false;
+            rigid.velocity = Vector3.zero;;
 
-            float angle = Vector3.Angle(beginning.position, end.position) * Mathf.Deg2Rad;
-            float dis = Vector3.Distance(beginning.position, end.position);
+            //float angle = Vector3.Angle(beginning.position, end.position) * Mathf.Deg2Rad;
+            //float dis = Vector3.Distance(beginning.position, end.position);
+            Debug.Log("Down: " + mouse_start);
+            Debug.Log("UP: " + mouse_end);
+            Debug.Log("Time: " + deltaTime);
+            
+            float angle = Vector3.Angle(mouse_start, mouse_end) * Mathf.Deg2Rad;
+            float dis = Vector3.Distance(mouse_start, mouse_end);            
 
             float velocity = dis / deltaTime;
-
-            ///Way 1:
-            float vx = velocity * (float)Math.Cos(angle);
-            float vy = velocity * (float)Math.Sin(angle);
-
-            ///Test this please, I still cant
-            float deltax = end.position.x - beginning.position.x;
-            float deltay = end.position.y - beginning.position.y;
-
-            //float vx = velocity * deltax;
-            //float vy = velocity * deltay;
+            
+            float vx = velocity * Mathf.Cos(angle);
+            float vy = velocity * Mathf.Sin(angle);                      
 
             Vector3 velocityVector = new Vector3(0, vy, vx);
-
-            Debug.Log("Vx: " + vx + " Vy: " + vy + " Angle(rad): " + angle + " V: " + velocity);
-
             velocityVector *= Time.deltaTime;
 
-            rigid.velocity = velocityVector;
+            Debug.Log("Vector: " + velocityVector);
+            Debug.Log("Vx: " + vx + " Vy: " + vy + " Angle(rad): " + angle + " V: " + velocity);
+
+            rigid.velocity = velocityVector;            
 
             clearToThrow = false;
         }
+    }
+
+    void RespawnBall()
+    {
+        var rigid = ball.GetComponent<Rigidbody>();
+
+        rigid.isKinematic = true;
+        rigid.velocity = Vector3.zero;
+
+        ball.transform.position = ballStartPos;
+
+        clearToThrow = true;
+
     }
 }

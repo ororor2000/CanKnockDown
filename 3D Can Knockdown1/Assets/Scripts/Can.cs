@@ -9,6 +9,8 @@ public class Can : MonoBehaviour
         if (other.tag.Equals("GameController"))
         {
             Destroy(gameObject);
+            Debug.Log("Fell");
+            GameManager.score += 1;
         }
     }
 }

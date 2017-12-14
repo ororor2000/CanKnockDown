@@ -1,4 +1,6 @@
 To do:
+--!ENDLevel(), check thorwBall.cs code 
+
 Extract from old game:
 -ball object and textures
 -shelf object and textures
