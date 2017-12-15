@@ -102,7 +102,7 @@ public class ThrowBall : MonoBehaviour
 
     private void ThrowControl()
     {
-        if (clearToThrow && mouse_start != Vector3.zero && mouse_end != Vector3.zero) // && beginning.position != Vector2.zero && end.position != Vector2.zero)
+        if (clearToThrow && mouse_start != Vector3.zero && mouse_end != Vector3.zero && mouse_start != mouse_end) // && beginning.position != Vector2.zero && end.position != Vector2.zero)
         {
             //float angle = Vector3.Angle(beginning.position, end.position) * Mathf.Deg2Rad;
             //float dis = Vector3.Distance(beginning.position, end.position);
