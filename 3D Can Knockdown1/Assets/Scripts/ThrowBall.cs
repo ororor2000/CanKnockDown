@@ -52,14 +52,7 @@ public class ThrowBall : MonoBehaviour
             //EndLevel() = Lost            
         }
         */
-
-        if (ball.transform.position.y < -17)
-        {
-            //GameManager.BallCount += 1;
-            //RestartScene(); (why?)->Debug, Was To lazy to repoosition ball
-            //RespawnBall();
-        }
-        else if (clearToThrow)
+        if (clearToThrow && !GameManager.End)
         {
 
             if (Input.touchCount > 0)
@@ -117,7 +110,7 @@ public class ThrowBall : MonoBehaviour
             float vx = velocity * Mathf.Cos(angle) * Mathf.Sign(disx);
             float vy = Mathf.Abs(velocity * Mathf.Sin(angle));
 
-            Vector3 velocityVector = new Vector3(vx, vy, 30) / 2;
+            Vector3 velocityVector = new Vector3(vx, vy, 40) / 2;
 
             ResetValues();
 

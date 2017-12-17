@@ -4,17 +4,24 @@ using UnityEngine;
 
 public class Can : MonoBehaviour
 {
+    private bool fell;
+
+    private void Start()
+    {
+        fell = false;
+    }
 
     void OnCollisionEnter(Collision other)
     {
         if (other.gameObject.tag == "Ball")
         {
-            gameObject.GetComponent<AudioSource>().Play();
+            GetComponent<AudioSource>().Play();
         }  
         
-        if (other.gameObject.tag == "Surface")
+        if (other.gameObject.tag == "Surface" && !fell)
         {
             GameManager.Score += 1;
+            fell = true;
         }
 
         
