@@ -5,20 +5,18 @@ using UnityEngine;
 public class Can : MonoBehaviour
 {
 
-    void OnTriggerEnter(Collider other)
+    void OnCollisionEnter(Collision other)
     {
-        if (other.tag == "Ball")
+        if (other.gameObject.tag == "Ball")
         {
             gameObject.GetComponent<AudioSource>().Play();
-        }    
-    }
-
-    private void Update()
-    {
-        if (transform.position.y < -20)
+        }  
+        
+        if (other.gameObject.tag == "Surface")
         {
             GameManager.Score += 1;
-            Destroy(gameObject);
         }
+
+        
     }
 }

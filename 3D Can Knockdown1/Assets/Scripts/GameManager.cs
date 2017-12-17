@@ -12,6 +12,9 @@ public class GameManager : MonoBehaviour
     public TextMeshProUGUI ballCount_txt;
     private static int ballCount = 0;
 
+    public TextMeshProUGUI text;
+    public static bool clearToReset = true;
+
     public static int Score
     {
         get
@@ -52,7 +55,12 @@ public class GameManager : MonoBehaviour
 
         if (score == 5)
         {
-            GetComponent<AudioSource>().Play();
+            text.text = "You Win";
+            //GetComponent<AudioSource>().Play();
+        }
+        else if (ballCount == 5)
+        {
+            text.text = "You Lose";
         }
     }
 }

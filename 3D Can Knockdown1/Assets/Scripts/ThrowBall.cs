@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
+using UnityEngine.Events;
 
 public class ThrowBall : MonoBehaviour
 {
@@ -19,11 +19,9 @@ public class ThrowBall : MonoBehaviour
     private float startTime;
     private float deltaTime;
 
-
     //DEBUG
     private Vector3 mouse_start;
     private Vector3 mouse_end;
-
 
     //Sets the ball object
     void Start()
@@ -57,9 +55,9 @@ public class ThrowBall : MonoBehaviour
 
         if (ball.transform.position.y < -17)
         {
-            GameManager.BallCount += 1;
-            //RestartScene(); (why?)
-            RespawnBall();
+            //GameManager.BallCount += 1;
+            //RestartScene(); (why?)->Debug, Was To lazy to repoosition ball
+            //RespawnBall();
         }
         else if (clearToThrow)
         {
@@ -131,7 +129,7 @@ public class ThrowBall : MonoBehaviour
         }
     }
 
-    void RespawnBall()
+    public void RespawnBall()
     {
         rigid.isKinematic = true;
         rigid.velocity = Vector3.zero;
@@ -139,6 +137,7 @@ public class ThrowBall : MonoBehaviour
         ball.transform.position = ballStartPos;
 
         clearToThrow = true;
+        GameManager.clearToReset = true;
     }
 
     private void ResetValues()
