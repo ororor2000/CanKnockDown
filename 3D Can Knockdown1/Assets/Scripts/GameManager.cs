@@ -61,5 +61,9 @@ public class GameManager : MonoBehaviour
             End = true;
             text.text = "You Lose";
         }
+        if (end)
+        {
+            Time.timeScale = 0; //Stops all movement
+        }
     }
 }

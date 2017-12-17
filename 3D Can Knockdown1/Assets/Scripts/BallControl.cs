@@ -7,14 +7,14 @@ public class BallControl : MonoBehaviour
 {
     void OnCollisionEnter(Collision other)
     {
-        if (other.gameObject.tag == "Surface" && GameManager.clearToReset)
+        if (other.gameObject.tag == "Surface" && GameManager.clearToReset) //Need to find another way, not accurate
         {
             GameManager.clearToReset = false;
             GameManager.BallCount += 1;
 
             StartCoroutine(Wait(2.5f, () =>
             {
-                gameObject.GetComponent<ThrowBall>().RespawnBall();
+                GetComponent<ThrowBall>().RespawnBall();
             }
             ));
         }

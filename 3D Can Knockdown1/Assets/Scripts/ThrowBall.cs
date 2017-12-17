@@ -13,7 +13,6 @@ public class ThrowBall : MonoBehaviour
 
     private bool clearToThrow = true;
     private Vector3 ballStartPos;
-    private GameObject ball;
     private Rigidbody rigid;
 
     private float startTime;
@@ -26,14 +25,8 @@ public class ThrowBall : MonoBehaviour
     //Sets the ball object
     void Start()
     {
-        ball = gameObject;
         ballStartPos = transform.position;
         rigid = GetComponent<Rigidbody>();
-    }
-
-    public void RestartScene()
-    {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
     //Updates every frame
@@ -41,7 +34,7 @@ public class ThrowBall : MonoBehaviour
     {
         //TODO
         /*
-        if (CheckWin()) ///In background control?
+        if (CheckWin()) ///In background control? 17/12 - Exists, delete?
         {
             Print("You Won");
             EndGame And Move To Next Level
@@ -127,7 +120,7 @@ public class ThrowBall : MonoBehaviour
         rigid.isKinematic = true;
         rigid.velocity = Vector3.zero;
 
-        ball.transform.position = ballStartPos;
+        transform.position = ballStartPos;
 
         clearToThrow = true;
         GameManager.clearToReset = true;
