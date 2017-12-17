@@ -11,6 +11,8 @@ public class ThrowBall : MonoBehaviour
     private Touch beginning;
     private Touch end;
 
+    public float z;
+
     private bool clearToThrow = true;
     private Vector3 ballStartPos;
     private Rigidbody rigid;
@@ -103,7 +105,7 @@ public class ThrowBall : MonoBehaviour
             float vx = velocity * Mathf.Cos(angle) * Mathf.Sign(disx);
             float vy = Mathf.Abs(velocity * Mathf.Sin(angle));
 
-            Vector3 velocityVector = new Vector3(vx, vy, 40) / 2;
+            Vector3 velocityVector = new Vector3(vx, vy, z) / 2;
 
             ResetValues();
 
