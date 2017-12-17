@@ -89,7 +89,7 @@ public class ThrowBall : MonoBehaviour
             float disx = end.position.x - beginning.position.x;
             float disy = end.position.y - beginning.position.y;
 
-            float angle = Mathf.Atan(disy / disx);
+            float angle = Mathf.Atan2(disy , disx);
 
             float velocity = dis / deltaTime * Time.deltaTime;
 

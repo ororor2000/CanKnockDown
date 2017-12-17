@@ -18,6 +18,11 @@ public class BallControl : MonoBehaviour
             }
             ));
         }
+
+        if (other.gameObject.tag == "ExplosiveCan")
+        {
+            other.gameObject.GetComponent<CanExplosion>().Explode();
+        }
     }
 
     IEnumerator Wait(float sec, System.Action action)
