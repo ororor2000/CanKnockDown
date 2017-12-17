@@ -22,8 +22,6 @@ public class Can : MonoBehaviour
         {
             GameManager.Score += 1;
             fell = true;
-        }
-
-        
+        }        
     }
 }

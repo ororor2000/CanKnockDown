@@ -12,9 +12,7 @@ public class GameManager : MonoBehaviour
     public TextMeshProUGUI ballCount_txt;
     private static int ballCount = 0;
 
-    public TextMeshProUGUI text;
-    public static bool clearToReset = true;
-
+    public TextMeshProUGUI end_text;
     private static bool end;
 
     private GameObject[] cans;
@@ -52,16 +50,16 @@ public class GameManager : MonoBehaviour
 
         if (score == cans.Length)
         {
-            text.text = "You Win";
+            end_text.text = "You Win";
             End = true;
             //GetComponent<AudioSource>().Play();
         }
         else if (ballCount == 5)
         {
             End = true;
-            text.text = "You Lose";
+            end_text.text = "You Lose";
         }
-        if (end)
+        if (end && GameObject.FindGameObjectWithTag("Ball").GetComponent<Ball>().ClearToThrow)
         {
             Time.timeScale = 0; //Stops all movement
         }

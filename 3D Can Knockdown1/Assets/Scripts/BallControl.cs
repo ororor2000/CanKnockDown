@@ -7,9 +7,9 @@ public class BallControl : MonoBehaviour
 {
     void OnCollisionEnter(Collision other)
     {
-        if (other.gameObject.tag == "Surface" && GameManager.clearToReset) //Need to find another way, not accurate
+        if (other.gameObject.tag == "Surface" && GetComponent<Ball>().ClearToThrow)
         {
-            GameManager.clearToReset = false;
+            GetComponent<Ball>().ClearToThrow = false;
             GameManager.BallCount += 1;
 
             StartCoroutine(Wait(2.5f, () =>
