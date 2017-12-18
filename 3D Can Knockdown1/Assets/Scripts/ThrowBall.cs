@@ -95,7 +95,7 @@ public class ThrowBall : MonoBehaviour
             float vx = velocity * Mathf.Cos(angle) * Mathf.Sign(disx);
             float vy = Mathf.Abs(velocity * Mathf.Sin(angle)) * Mathf.Sign(disy);
 
-            Vector3 velocityVector = new Vector3(vx, vy < 45 ? vy : 45, vz * 3) / 3;
+            Vector3 velocityVector = new Vector3(vx / 2, vy < 12.5 ? vy : 13, vz);
             ResetValues();
 
             rigid.velocity = velocityVector;
@@ -134,9 +134,9 @@ public class ThrowBall : MonoBehaviour
             float velocity = dis / deltaTime * Time.deltaTime;
 
             float vx = velocity * Mathf.Cos(angle) * Mathf.Sign(disx);
-            float vy = Mathf.Abs(velocity * Mathf.Sin(angle));
+            float vy = Mathf.Abs(velocity * Mathf.Sin(angle)) * Mathf.Sign(disy);
 
-            Vector3 velocityVector = new Vector3(vx, vy < 40 ? vy : 40, vz * 3) / 3;
+            Vector3 velocityVector = new Vector3(vx / 2, vy < 12.5 ? vy : 13, vz);
 
             ResetValues();
 

@@ -20,6 +20,9 @@ public class GameManager : MonoBehaviour
 
     List<GameObject> cans;
 
+    public Sprite[] muteSprites;
+    public Button bt_mute;
+
     public static int Score
     {
         get { return score; }
@@ -74,4 +77,18 @@ public class GameManager : MonoBehaviour
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
+
+    public void MuteSwitch()
+    {
+        AudioListener.volume = 1 - AudioListener.volume;
+
+        if (bt_mute.GetComponent<Image>().sprite == muteSprites[0])
+        {
+            bt_mute.GetComponent<Image>().sprite = muteSprites[1];
+        }
+        else
+        {
+            bt_mute.GetComponent<Image>().sprite = muteSprites[0];
+        }
+    }  
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody))]
 public class CanExplosion : MonoBehaviour
 {
     public GameObject explosionEffect;
@@ -44,19 +45,28 @@ public class CanExplosion : MonoBehaviour
 
             foreach (var nearObj in colliders)
             {
-                Rigidbody rb = nearObj.GetComponent<Rigidbody>();
-                CanExplosion explosion = nearObj.GetComponent<CanExplosion>();
+                Rigidbody rb = nearObj.GetComponent<Rigidbody>();                
 
-                if (rb != null)
+                if (rb != null && nearObj.GetComponent<CanExplosion>() == null)
                 {
                     rb.AddExplosionForce(force, transform.position, radius);
-                }
+                }               
+            }
+
+            var collidersToExplode = Physics.OverlapSphere(transform.position, 0.5f);
+
+            foreach (var nearObj in collidersToExplode)
+            {
+                CanExplosion explosion = nearObj.GetComponent<CanExplosion>();
+                var rb = nearObj.GetComponent<Rigidbody>();
 
                 if (explosion != null)
-                {
+                {              
+                    rb.AddExplosionForce(force, transform.position, radius);      
                     explosion.Explode();
                 }
             }
+
 
             Destroy(gameObject.GetComponent<MeshCollider>());
             Destroy(gameObject.GetComponent<MeshRenderer>());
@@ -75,7 +85,7 @@ public class CanExplosion : MonoBehaviour
         action();
     }
 
-    void OnCollisionEnter(Collision other)
+    void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.tag == "Surface" && !fell)
         {
