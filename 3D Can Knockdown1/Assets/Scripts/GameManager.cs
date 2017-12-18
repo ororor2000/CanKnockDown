@@ -15,7 +15,7 @@ public class GameManager : MonoBehaviour
     public TextMeshProUGUI end_text;
     private static bool end;
 
-    private GameObject[] cans;
+    List<GameObject> cans;
 
     public static int Score
     {
@@ -38,7 +38,8 @@ public class GameManager : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        cans = GameObject.FindGameObjectsWithTag("Can");
+        cans = new List<GameObject>(GameObject.FindGameObjectsWithTag("Can"));
+        cans.AddRange(GameObject.FindGameObjectsWithTag("ExplosiveCan"));
         End = false;
     }
 
@@ -48,20 +49,20 @@ public class GameManager : MonoBehaviour
         score_txt.text = "Score: " + Score;
         ballCount_txt.text = "Ball Count: " + BallCount;
 
-        if (score == cans.Length)
+        if (score == cans.Count)
         {
-            //end_text.text = "You Win";
-            //End = true;
-            //GetComponent<AudioSource>().Play();
+            end_text.text = "You Win";
+            End = true;
+            GetComponent<AudioSource>().Play();
         }
         else if (ballCount == 5)
         {
-            //End = true;
-           // end_text.text = "You Lose";
+            End = true;
+            end_text.text = "You Lose";
         }
         if (end && GameObject.FindGameObjectWithTag("Ball").GetComponent<Ball>().ClearToThrow)
         {
-            //Time.timeScale = 0; //Stops all movement
+            Time.timeScale = 0; //Stops all movement
         }
     }
 }

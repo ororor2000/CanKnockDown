@@ -36,7 +36,6 @@ public class CanExplosion : MonoBehaviour
         {
             GetComponent<AudioSource>().enabled = true;
             GetComponent<AudioSource>().Play();
-
             exploded = true;
 
             var obj = Instantiate(explosionEffect, transform.position, transform.rotation);
@@ -82,6 +81,7 @@ public class CanExplosion : MonoBehaviour
         {
             GameManager.Score += 1;
             fell = true;
+            exploded = true;
         }
     }
 }

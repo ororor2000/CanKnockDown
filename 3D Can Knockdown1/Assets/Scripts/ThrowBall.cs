@@ -11,6 +11,10 @@ public class ThrowBall : MonoBehaviour
     private Touch beginning;
     private Touch end;
 
+    private bool respawning;
+
+    public float vz;
+
     public float z;
 
     private bool clearToThrow = true;
@@ -24,30 +28,28 @@ public class ThrowBall : MonoBehaviour
     private Vector3 mouse_start;
     private Vector3 mouse_end;
 
+    public Vector3 ballthrowposition;
+
     //Sets the ball object
     void Start()
     {
         ballStartPos = transform.position;
         rigid = GetComponent<Rigidbody>();
+        RespawnBall();
     }
 
     //Updates every frame
     void Update()
     {
-        //TODO
-        /*
-        if (CheckWin()) ///In background control? 17/12 - Exists, delete?
+        if (respawning)
         {
-            Print("You Won");
-            EndGame And Move To Next Level
+            transform.position = new Vector3(transform.position.x, transform.position.y, z);
+            if (transform.position.x > 0)
+            {
+                ReadyToThrow();
+            }
         }
-         * 
-        if (GameManager.ballCount > z) where z = predetermined number unique for a each level
-        {
-            //EndLevel() = Lost            
-        }
-        */
-        if (clearToThrow)// && !GameManager.End)
+        else if (clearToThrow && !GameManager.End)
         {
 
             if (Input.touchCount > 0)
@@ -83,23 +85,19 @@ public class ThrowBall : MonoBehaviour
     {
         if (clearToThrow && beginning.position != Vector2.zero && end.position != Vector2.zero && beginning.position != end.position)
         {
-            //float angle = Vector3.Angle(beginning.position, end.position) * Mathf.Deg2Rad;
             float dis = Vector3.Distance(beginning.position, end.position);
 
             float disx = end.position.x - beginning.position.x;
             float disy = end.position.y - beginning.position.y;
 
             float angle = Mathf.Atan(disy / disx);
-            Debug.Log("b:  " + beginning.position + " e: " + end.position);
             float velocity = dis / deltaTime * Time.deltaTime;
-            Debug.Log(String.Format("{0}, {1}, {2}, {3}, {4}", dis, disx, disy, angle, velocity));
             float vx = velocity * Mathf.Cos(angle) * Mathf.Sign(disx);
             float vy = Mathf.Abs(velocity * Mathf.Sin(angle));
 
-            Vector3 velocityVector = new Vector3(vx, vy, z * 3) / 3;
+            Vector3 velocityVector = new Vector3(vx, vy < 45 ? vy : 45, vz * 3) / 3;
             ResetValues();
 
-            Debug.Log("Vector: " + velocityVector);
             rigid.velocity = velocityVector;
             rigid.isKinematic = false;
 
@@ -133,16 +131,12 @@ public class ThrowBall : MonoBehaviour
 
             float angle = Mathf.Atan(disy / disx);
             float dis = Vector3.Distance(mouse_start, mouse_end);
-            Debug.Log("alpha: " + angle + " Dis: " + dis);
-
             float velocity = dis / deltaTime * Time.deltaTime;
 
             float vx = velocity * Mathf.Cos(angle) * Mathf.Sign(disx);
             float vy = Mathf.Abs(velocity * Mathf.Sin(angle));
-            Debug.Log(String.Format("{0}, {1}, {2}, {3}, {4}", dis, disx, disy, angle, velocity));
 
-            Vector3 velocityVector = new Vector3(vx, vy, z * 3) / 3;
-            Debug.Log("Vector: " + velocityVector);
+            Vector3 velocityVector = new Vector3(vx, vy < 40 ? vy : 40, vz * 3) / 3;
 
             ResetValues();
 
@@ -155,13 +149,23 @@ public class ThrowBall : MonoBehaviour
 
     public void RespawnBall()
     {
-        rigid.isKinematic = true;
-        rigid.velocity = Vector3.zero;
-
         transform.position = ballStartPos;
+        transform.rotation = new Quaternion();
+        rigid.velocity = new Vector3();
+        rigid.velocity = new Vector3(5, 0, 0);
 
-        clearToThrow = true;
+        respawning = true;
+
         GetComponent<Ball>().ClearToThrow = true;
+    }
+
+    private void ReadyToThrow()
+    {
+        rigid.velocity = Vector3.zero;
+        transform.position = ballthrowposition;
+        rigid.isKinematic = true;
+        respawning = false;
+        clearToThrow = true;
     }
 
     private void ResetValues()
