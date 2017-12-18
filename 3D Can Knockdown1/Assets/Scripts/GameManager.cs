@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
@@ -14,6 +15,8 @@ public class GameManager : MonoBehaviour
 
     public TextMeshProUGUI end_text;
     private static bool end;
+
+    public Button retry_bt;
 
     List<GameObject> cans;
 
@@ -59,10 +62,16 @@ public class GameManager : MonoBehaviour
         {
             End = true;
             end_text.text = "You Lose";
+            retry_bt.enabled = true;
         }
         if (end && GameObject.FindGameObjectWithTag("Ball").GetComponent<Ball>().ClearToThrow)
         {
             Time.timeScale = 0; //Stops all movement
         }
+    }
+
+    public void Retry()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }
