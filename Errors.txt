@@ -1,1 +1,1 @@
-if can falls to shelf, then falls to ground, it add 2 points
+Explosion is bad
