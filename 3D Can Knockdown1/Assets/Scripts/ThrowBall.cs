@@ -57,7 +57,7 @@ public class ThrowBall : MonoBehaviour
             else
             {
                 MouseControl();
-            }            
+            }
         }
 
     }
@@ -89,7 +89,7 @@ public class ThrowBall : MonoBehaviour
             float disx = end.position.x - beginning.position.x;
             float disy = end.position.y - beginning.position.y;
 
-            float angle = Mathf.Atan2(disy , disx);
+            float angle = Mathf.Atan(disy / disx);
 
             float velocity = dis / deltaTime * Time.deltaTime;
 
@@ -132,7 +132,7 @@ public class ThrowBall : MonoBehaviour
             float disx = mouse_end.x - mouse_start.x;
             float disy = mouse_end.y - mouse_start.y;
 
-            float angle = Mathf.Atan2(disy, disx);
+            float angle = Mathf.Atan(disy / disx);
             float dis = Vector3.Distance(mouse_start, mouse_end);
             Debug.Log("alpha: " + angle + " Dis: " + dis);
 
@@ -141,7 +141,7 @@ public class ThrowBall : MonoBehaviour
             float vx = velocity * Mathf.Cos(angle) * Mathf.Sign(disx);
             float vy = Mathf.Abs(velocity * Mathf.Sin(angle));
 
-            Vector3 velocityVector = new Vector3(vx, vy, z) / 2;
+            Vector3 velocityVector = new Vector3(vx, vy, z * 3) / 3;
             Debug.Log("Vector: " + velocityVector);
 
             ResetValues();

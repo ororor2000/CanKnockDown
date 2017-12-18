@@ -10,17 +10,17 @@ public class CanExplosion : MonoBehaviour
     private Vector3 startPos;
 
     // Use this for initialization
-    void Start ()
+    void Start()
     {
         exploded = false;
         startPos = transform.position;
     }
-	
-	// Update is called once per frame
-	void Update ()
+
+    // Update is called once per frame
+    void Update()
     {
         //
-	}
+    }
 
     public void Explode()
     {
@@ -28,30 +28,29 @@ public class CanExplosion : MonoBehaviour
         {
             GameManager.Score += 1;
             exploded = true;
-        }
+            Instantiate(explosionEffect, transform.position, transform.rotation);
 
-        Instantiate(explosionEffect, transform.position, transform.rotation);
+            var colliders = Physics.OverlapSphere(transform.position, 5f);
 
-        var colliders = Physics.OverlapSphere(transform.position, 5f);
-
-        foreach (var nearObj in colliders)
-        {
-            Rigidbody rb = nearObj.GetComponent<Rigidbody>();
-            CanExplosion explosion = nearObj.GetComponent<CanExplosion>();
-
-            if (rb != null)
+            foreach (var nearObj in colliders)
             {
-                rb.AddExplosionForce(700f, transform.position, 5f);
+                Rigidbody rb = nearObj.GetComponent<Rigidbody>();
+                CanExplosion explosion = nearObj.GetComponent<CanExplosion>();
+
+                if (rb != null)
+                {
+                    rb.AddExplosionForce(700f, transform.position, 5f);
+                }
+
+                if (explosion != null)
+                {
+                    explosion.Explode();
+                }
+
+                Destroy(nearObj);
             }
 
-            if (explosion != null)
-            {
-                explosion.Explode();
-            }
-
-            Destroy(nearObj);
+            Destroy(gameObject);
         }
-        
-        Destroy(gameObject);
     }
 }
