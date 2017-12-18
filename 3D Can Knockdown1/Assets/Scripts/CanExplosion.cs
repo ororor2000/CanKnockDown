@@ -9,6 +9,11 @@ public class CanExplosion : MonoBehaviour
 
     private Vector3 startPos;
 
+    [SerializeField]
+    private float force = 70f;
+    [SerializeField]
+    private float radius = 5f;
+
     // Use this for initialization
     void Start()
     {
@@ -26,11 +31,15 @@ public class CanExplosion : MonoBehaviour
     {
         if (!exploded)
         {
+            GetComponent<AudioSource>().enabled = true;
+            GetComponent<AudioSource>().Play();
+
             GameManager.Score += 1;
             exploded = true;
-            Instantiate(explosionEffect, transform.position, transform.rotation);
 
-            var colliders = Physics.OverlapSphere(transform.position, 5f);
+            var obj = Instantiate(explosionEffect, transform.position, transform.rotation);
+
+            var colliders = Physics.OverlapSphere(transform.position, radius);
 
             foreach (var nearObj in colliders)
             {
@@ -39,18 +48,27 @@ public class CanExplosion : MonoBehaviour
 
                 if (rb != null)
                 {
-                    rb.AddExplosionForce(700f, transform.position, 5f);
+                    rb.AddExplosionForce(force, transform.position, radius);
                 }
 
                 if (explosion != null)
                 {
                     explosion.Explode();
                 }
-
-                Destroy(nearObj);
             }
 
-            Destroy(gameObject);
+            Destroy(gameObject.GetComponent<MeshCollider>());
+            Destroy(gameObject.GetComponent<MeshRenderer>());
+
+            StartCoroutine(Wait(5, () => {
+                Destroy(obj);
+            }));
         }
+    }
+
+    IEnumerator Wait(float sec, System.Action action)
+    {
+        yield return new WaitForSeconds(sec);
+        action();
     }
 }

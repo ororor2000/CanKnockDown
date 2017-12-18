@@ -50,18 +50,18 @@ public class GameManager : MonoBehaviour
 
         if (score == cans.Length)
         {
-            end_text.text = "You Win";
-            End = true;
+            //end_text.text = "You Win";
+            //End = true;
             //GetComponent<AudioSource>().Play();
         }
         else if (ballCount == 5)
         {
-            End = true;
-            end_text.text = "You Lose";
+            //End = true;
+           // end_text.text = "You Lose";
         }
         if (end && GameObject.FindGameObjectWithTag("Ball").GetComponent<Ball>().ClearToThrow)
         {
-            Time.timeScale = 0; //Stops all movement
+            //Time.timeScale = 0; //Stops all movement
         }
     }
 }
