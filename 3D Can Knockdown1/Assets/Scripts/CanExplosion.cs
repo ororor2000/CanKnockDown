@@ -14,11 +14,14 @@ public class CanExplosion : MonoBehaviour
     [SerializeField]
     private float radius = 5f;
 
+    private bool fell;
+
     // Use this for initialization
     void Start()
     {
         exploded = false;
         startPos = transform.position;
+        fell = false;
     }
 
     // Update is called once per frame
@@ -34,7 +37,6 @@ public class CanExplosion : MonoBehaviour
             GetComponent<AudioSource>().enabled = true;
             GetComponent<AudioSource>().Play();
 
-            GameManager.Score += 1;
             exploded = true;
 
             var obj = Instantiate(explosionEffect, transform.position, transform.rotation);
@@ -59,8 +61,10 @@ public class CanExplosion : MonoBehaviour
 
             Destroy(gameObject.GetComponent<MeshCollider>());
             Destroy(gameObject.GetComponent<MeshRenderer>());
+            GameManager.Score += 1;
 
-            StartCoroutine(Wait(5, () => {
+            StartCoroutine(Wait(5, () =>
+            {
                 Destroy(obj);
             }));
         }
@@ -70,5 +74,14 @@ public class CanExplosion : MonoBehaviour
     {
         yield return new WaitForSeconds(sec);
         action();
+    }
+
+    void OnCollisionEnter(Collision other)
+    {
+        if (other.gameObject.tag == "Surface" && !fell)
+        {
+            GameManager.Score += 1;
+            fell = true;
+        }
     }
 }

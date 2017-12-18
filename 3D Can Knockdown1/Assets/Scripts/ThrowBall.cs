@@ -47,7 +47,7 @@ public class ThrowBall : MonoBehaviour
             //EndLevel() = Lost            
         }
         */
-        if (GetComponent<Ball>().ClearToThrow && !GameManager.End)
+        if (clearToThrow)// && !GameManager.End)
         {
 
             if (Input.touchCount > 0)
@@ -70,7 +70,7 @@ public class ThrowBall : MonoBehaviour
             startTime = Time.time;
         }
 
-        if (Input.GetTouch(0).phase == TouchPhase.Ended || Input.GetMouseButtonUp(0))
+        if (Input.GetTouch(0).phase == TouchPhase.Ended)
         {
             end = Input.GetTouch(0);
             deltaTime = Time.time - startTime;
@@ -90,9 +90,9 @@ public class ThrowBall : MonoBehaviour
             float disy = end.position.y - beginning.position.y;
 
             float angle = Mathf.Atan(disy / disx);
-
+            Debug.Log("b:  " + beginning.position + " e: " + end.position);
             float velocity = dis / deltaTime * Time.deltaTime;
-
+            Debug.Log(String.Format("{0}, {1}, {2}, {3}, {4}", dis, disx, disy, angle, velocity));
             float vx = velocity * Mathf.Cos(angle) * Mathf.Sign(disx);
             float vy = Mathf.Abs(velocity * Mathf.Sin(angle));
 
@@ -139,6 +139,7 @@ public class ThrowBall : MonoBehaviour
 
             float vx = velocity * Mathf.Cos(angle) * Mathf.Sign(disx);
             float vy = Mathf.Abs(velocity * Mathf.Sin(angle));
+            Debug.Log(String.Format("{0}, {1}, {2}, {3}, {4}", dis, disx, disy, angle, velocity));
 
             Vector3 velocityVector = new Vector3(vx, vy, z * 3) / 3;
             Debug.Log("Vector: " + velocityVector);
