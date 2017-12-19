@@ -5,20 +5,23 @@ using UnityEngine;
 
 public class BallControl : MonoBehaviour
 {
-    void OnCollisionEnter(Collision other)
+    void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.tag == "Surface" && GetComponent<Ball>().ClearToThrow)
         {
             GetComponent<Ball>().ClearToThrow = false;
             GameManager.BallCount += 1;
 
-            StartCoroutine(Wait(2.5f, () =>
+            StartCoroutine(Wait(2, () =>
             {
                 GetComponent<ThrowBall>().RespawnBall();
             }
             ));
         }
+    }
 
+    void OnCollisionEnter(Collision other)
+    {
         if (other.gameObject.tag == "ExplosiveCan")
         {
             other.gameObject.GetComponent<CanExplosion>().Explode();
