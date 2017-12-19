@@ -150,11 +150,11 @@ public class GameManager : MonoBehaviour
     {
         string[] arr = SceneManager.GetActiveScene().name.Split('_');
 
-        string str = arr[1];
+       // string str = arr[1];
 
-        str = str.Replace(str[0], str[0].ToString().ToUpper().ToCharArray()[0]);
+        //str = str.Replace(str[0], str[0].ToString().ToUpper().ToCharArray()[0]);
 
-        return str;
+        return "";
     }
 
     public void RetryArea()
