@@ -1,5 +1,8 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -22,6 +25,8 @@ public class GameManager : MonoBehaviour
 
     public Sprite[] muteSprites;
     public Button bt_mute;
+
+    public AreaData data;
 
     public static int Score
     {
@@ -47,6 +52,11 @@ public class GameManager : MonoBehaviour
         cans = new List<GameObject>(GameObject.FindGameObjectsWithTag("Can"));
         cans.AddRange(GameObject.FindGameObjectsWithTag("ExplosiveCan"));
         End = false;
+
+        if (LoadData("TestArea") != null)
+        {
+            data = LoadData("TestArea");
+        }
     }
 
     // Update is called once per frame
@@ -69,8 +79,63 @@ public class GameManager : MonoBehaviour
         }
         if (end && GameObject.FindGameObjectWithTag("Ball").GetComponent<Ball>().ClearToThrow)
         {
-            Time.timeScale = 0; //Stops all movement
+            SaveData("TestArea");
+
+            StartCoroutine(Wait(2, () =>
+            {
+                SceneManager.LoadScene("lvl_test_02");
+            }));
         }
+    }
+
+    IEnumerator Wait(float sec, System.Action action)
+    {
+        yield return new WaitForSeconds(sec);
+        action();
+    }
+
+    public bool SaveData(string fileName)
+    {
+        try
+        {
+            BinaryFormatter format = new BinaryFormatter();
+
+            using (FileStream file = File.Create(Application.persistentDataPath + "/" + fileName + ".dat"))
+            {
+                AreaData data = new AreaData();
+
+                data.score = score;
+                data.ballCount = ballCount;
+
+                format.Serialize(file, data);
+                file.Close();
+            }
+
+            return true;
+        }
+        catch (Exception e)
+        {
+            return false;
+        }
+    }
+
+    public AreaData LoadData(string fileName)
+    {
+        if (File.Exists(Application.persistentDataPath + "/" + fileName + ".dat"))
+        {
+            BinaryFormatter format = new BinaryFormatter();
+
+            using (FileStream file = File.Open(Application.persistentDataPath + "/" + fileName + ".dat", FileMode.Open))
+            {
+                AreaData data = new AreaData();
+
+                data = (AreaData)format.Deserialize(file);
+
+                return data;
+            }
+        }
+
+        return null;
     }
 
     public void Retry()
