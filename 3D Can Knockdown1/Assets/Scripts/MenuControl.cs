@@ -9,4 +9,11 @@ public class MenuControl : MonoBehaviour
     {
         SceneManager.LoadScene("Scenes/" + scenename);
     }
+
+    public void LoadArea_Reset(string areaName)
+    {
+        GameManager.SaveData(areaName, -1);
+
+        LoadScene(string.Format("lvl_{0}_01", areaName));
+    }
 }

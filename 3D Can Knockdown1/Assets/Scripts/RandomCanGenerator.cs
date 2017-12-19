@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class RandomCanGenerator : MonoBehaviour
@@ -47,21 +48,30 @@ public class RandomCanGenerator : MonoBehaviour
         }
         else
         {
-            
+            Dictionary<int, int> rows = new Dictionary<int, int>();
+            List<int> rowNum = new List<int>();
+            List<int> rowSize = new List<int>();
+
+            int m = 1;
+            int sum = 0;
+            while (sum < size)
+            {
+                rowNum.Add(rows.Count);
+                rowSize.Add(m);
+                sum += m;
+                m += 1;
+            }
+
+            rowNum.Reverse();            
+
+            for (int i = 0; i < rowNum.Count; i++)
+            {
+                //cans.Add(InstantiateCan(RandomCanType(), SetOffset()));
+            }
         }
 
     }
-
-    /*List<GameObject>*/void PopulateRow(List<GameObject> row, int level)
-    {
-        int type = Random(0, 1);
-
-        for (int i = 0; i < row.Capacity; i++)
-        {
-            //row.Add(InstantiateCan(type, SetOffset()));
-        }
-    }
-
+        
     int RandomCanType()
     {
         var arr = new[] {0, 0, 0, 0, 0, 0, 1 };

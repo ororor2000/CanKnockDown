@@ -12,6 +12,9 @@ public class BallControl : MonoBehaviour
             GetComponent<Ball>().ClearToThrow = false;
             GameManager.BallCount += 1;
 
+           
+            GetComponent<Ball>().MoveToNextLevel = true;           
+
             StartCoroutine(Wait(2, () =>
             {
                 GetComponent<ThrowBall>().RespawnBall();

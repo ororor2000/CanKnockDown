@@ -136,7 +136,7 @@ public class ThrowBall : MonoBehaviour
             float vx = velocity * Mathf.Cos(angle) * Mathf.Sign(disx);
             float vy = Mathf.Abs(velocity * Mathf.Sin(angle)) * Mathf.Sign(disy);
 
-            Vector3 velocityVector = new Vector3(vx / 2, vy < 12.5 ? vy : 13, vz);
+            Vector3 velocityVector = new Vector3(vx / 2, vy < 12.5 ? vy : 10, vz);
 
             ResetValues();
 

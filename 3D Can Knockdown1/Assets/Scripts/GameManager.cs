@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Text;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -51,12 +52,11 @@ public class GameManager : MonoBehaviour
     {
         cans = new List<GameObject>(GameObject.FindGameObjectsWithTag("Can"));
         cans.AddRange(GameObject.FindGameObjectsWithTag("ExplosiveCan"));
-        End = false;
+        End = false;                
 
-        if (LoadData("TestArea") != null)
-        {
-            data = LoadData("TestArea");
-        }
+        data = LoadData(GetCurrentAreaName());
+
+        GetCurrentAreaName();
     }
 
     // Update is called once per frame
@@ -65,7 +65,8 @@ public class GameManager : MonoBehaviour
         score_txt.text = "Score: " + Score;
         ballCount_txt.text = "Ball Count: " + BallCount;
 
-        if (score == cans.Count)
+        Debug.Log(data.totalScore);
+        if (score == cans.Count + data.totalScore)
         {
             end_text.text = "You Win";
             End = true;
@@ -75,17 +76,27 @@ public class GameManager : MonoBehaviour
         {
             End = true;
             end_text.text = "You Lose";
-            retry_bt.enabled = true;
         }
-        if (end && GameObject.FindGameObjectWithTag("Ball").GetComponent<Ball>().ClearToThrow)
+        if (end && GameObject.FindGameObjectWithTag("Ball").GetComponent<Ball>().ClearToThrow && GameObject.FindGameObjectWithTag("Ball").GetComponent<Ball>().MoveToNextLevel)
         {
-            SaveData(GetCurrentAreaName());
-
             StartCoroutine(Wait(2, () =>
             {
-                SceneManager.LoadScene("lvl_test_02");
+                LoadNextSceneInArea();
             }));
         }
+    }
+
+    void LoadNextSceneInArea()
+    {
+        SaveData(GetCurrentAreaName());
+   
+        string str = SceneManager.GetActiveScene().name.Split('_')[2];
+
+        int l = int.Parse(str);
+
+        Debug.Log(l);
+
+        SceneManager.LoadScene("lvl_" + GetCurrentAreaName() + "_0" + (l + 1));
     }
 
     IEnumerator Wait(float sec, System.Action action)
@@ -93,8 +104,8 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(sec);
         action();
     }
-
-    public bool SaveData(string fileName, int saveCode = 0)
+    
+    public static bool SaveData(string fileName, int saveCode = 0)
     {
         try
         {
@@ -103,17 +114,16 @@ public class GameManager : MonoBehaviour
             using (FileStream file = File.Create(Application.persistentDataPath + "/" + fileName + ".dat"))
             {
                 AreaData data = new AreaData();
-
                 if (saveCode == -1)
                 {
-                    data.score = 0;
-                    data.ballCount = 0;
+                    data.totalScore = 0;
+                    data.totalBallCount = 0;
                 }
                 else
                 {
-                    data.score = score;
-                    data.ballCount = ballCount;
-                }
+                    data.totalScore = score;
+                    data.totalBallCount = ballCount;
+                }                
 
                 format.Serialize(file, data);
                 file.Close();
@@ -142,27 +152,48 @@ public class GameManager : MonoBehaviour
                 return data;
             }
         }
-
-        return null;
+        else
+        {
+            return new AreaData
+            {
+                totalBallCount = 0,
+                totalScore = 0
+            };
+        }        
     }
 
     string GetCurrentAreaName()
-    {
-        string[] arr = SceneManager.GetActiveScene().name.Split('_');
+    {        
+        string str = SceneManager.GetActiveScene().name.Split('_')[1];
 
-       // string str = arr[1];
+        StringBuilder builder = new StringBuilder();
 
-        //str = str.Replace(str[0], str[0].ToString().ToUpper().ToCharArray()[0]);
-
-        return "";
+        for (int i = 0; i < str.Length; i++)
+        {
+            if (i == 0)
+            {
+                builder.Append(str[i].ToString().ToUpper());
+            }
+            else
+            {
+                builder.Append(str[i]);
+            }
+        }
+                
+        return builder.ToString();
     }
 
     public void RetryArea()
     {
         string areaName = GetCurrentAreaName();
 
-        SaveData(GetCurrentAreaName(), -1);
+        end = false;
+        score = 0;
+        ballCount = 0;
 
+        SaveData(GetCurrentAreaName());
+        Debug.Log("Saved Empty");
+               
         SceneManager.LoadScene("lvl_" + areaName + "_01");
     }
 
