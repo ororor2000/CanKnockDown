@@ -8,9 +8,8 @@ public class CanExplosion : MonoBehaviour
     public GameObject explosionEffect;
     private bool exploded;
 
-    private Vector3 startPos;
 
-    [SerializeField]
+    //[SerializeField] Needed?
     private float force = 70f;
     [SerializeField]
     private float radius = 5f;
@@ -21,7 +20,6 @@ public class CanExplosion : MonoBehaviour
     void Start()
     {
         exploded = false;
-        startPos = transform.position;
         fell = false;
     }
 

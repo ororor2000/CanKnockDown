@@ -5,15 +5,25 @@ using UnityEngine;
 
 public class BallControl : MonoBehaviour
 {
+    private bool clearToThrow;
+
+    void Start()
+    {
+        clearToThrow = true;
+    }
+
+    public bool ClearToThrow
+    {
+        get { return clearToThrow; }
+        set { clearToThrow = value; }
+    }
+
     void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.tag == "Surface" && GetComponent<Ball>().ClearToThrow)
+        if (other.gameObject.tag == "Surface" && clearToThrow) //What is clear to throw?
         {
-            GetComponent<Ball>().ClearToThrow = false;
+            clearToThrow = false;
             GameManager.BallCount += 1;
-
-           
-            GetComponent<Ball>().MoveToNextLevel = true;           
 
             StartCoroutine(Wait(2, () =>
             {
@@ -36,4 +46,6 @@ public class BallControl : MonoBehaviour
         yield return new WaitForSeconds(sec);
         action();
     }
+
+
 }
