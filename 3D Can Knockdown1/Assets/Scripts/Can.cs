@@ -16,14 +16,14 @@ public class Can : MonoBehaviour
         if (other.gameObject.tag == "Ball")
         {
             GetComponent<AudioSource>().Play();
-        }  
+        }
     }
 
     void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.tag == "Surface" && !fell)
         {
-            GameManager.Score += 1;
+            GameManager.Score++;
             fell = true;
         }
     }

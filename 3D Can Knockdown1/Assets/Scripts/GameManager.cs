@@ -33,7 +33,7 @@ public class GameManager : MonoBehaviour
     #region Scene properties
     private static string area;
     private static string level;
-    private List<GameObject> cans;
+    private static List<GameObject> cans;
     #endregion
 
     public Button retry_bt;
@@ -68,7 +68,7 @@ public class GameManager : MonoBehaviour
         EndText = GameObject.Find("EndText").GetComponent<TextMeshProUGUI>();
     }
 
-    public void UpdateValues(int state)
+    public static void UpdateValues(int state)
     {
         switch (state)
         {
@@ -81,8 +81,12 @@ public class GameManager : MonoBehaviour
             default:
                 break;
         }
-        ScoreText.text = "Score: " + Score;
-        BallCountText.text = "Ball Count: " + BallCount;
+    }
+
+    private void UpdateState()
+    {
+        ScoreText.text = "Score: " + Score + '/' + cans.Count;
+        BallCountText.text = "Ball Count: " + BallCount + "/" + BallLimit;
         if (score == cans.Count)
         {
             EndText.text = "You Win";
@@ -110,16 +114,13 @@ public class GameManager : MonoBehaviour
 
         ScoreText.text = "Score: 0";
         BallCountText.text = "Ball Count: 0";
-        //data = LoadData(GetCurrentAreaName());
-
-        Debug.Log(GetCurrentAreaName());
-        Debug.Log(SaveLevelData());
     }
 
     // Update is called once per frame
     void Update()
     {
-
+        UpdateState();
+        OnEnd();
     }
 
     void LoadNextSceneInArea()
@@ -129,10 +130,17 @@ public class GameManager : MonoBehaviour
         string str = SceneManager.GetActiveScene().name.Split('_')[1];
 
         int l = int.Parse(str);
+        string path = "Scenes/" + area + "/lvl_" + (l + 1);
+        Debug.Log(path);
+        if (SceneManager.GetSceneByPath(path).IsValid())//Not working
+        {
+            MenuControl.LoadScene(area + "/lvl_" + (l + 1));
+        }
+        else
+        {
+            MenuControl.LoadScene("Menus/Menu");
+        }
 
-        Debug.Log(l);
-
-        SceneManager.LoadScene(area + "/lvl_" + (l + 1));
     }
 
     IEnumerator Wait(float sec, System.Action action)
@@ -169,6 +177,14 @@ public class GameManager : MonoBehaviour
         catch (Exception)
         {
             return false;
+        }
+    }
+
+    private void OnEnd()
+    {
+        if (end == End.Win)
+        {
+            Invoke("LoadNextSceneInArea", 2f);
         }
     }
 
@@ -244,40 +260,17 @@ public class GameManager : MonoBehaviour
     string GetCurrentAreaName()
     {
         return SceneManager.GetActiveScene().path.Split('/')[2];
-
-        //StringBuilder builder = new StringBuilder();
-
-        //for (int i = 0; i < str.Length; i++)
-        //{
-        //    if (i == 0)
-        //    {
-        //        builder.Append(str[i].ToString().ToUpper());
-        //    }
-        //    else
-        //    {
-        //        builder.Append(str[i]);
-        //    }
-        //}
-
-        //return builder.ToString();
     }
 
     public void RetryArea()
     {
         string areaName = GetCurrentAreaName();
-
-        end = End.False;
-        score = 0;
-        ballCount = 0;
-
-        SceneManager.LoadScene(areaName + "/lvl_01");
+        MenuControl.LoadScene(areaName + "/lvl_1");
     }
 
     public void RetryLevel()
     {
         end = End.False;
-        //score = 0; Resets on start?
-        //ballCount = 0;
         MenuControl.LoadScene(area + "/" + level);
     }
 

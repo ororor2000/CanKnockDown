@@ -14,6 +14,6 @@ public class MenuControl : MonoBehaviour
     {
         GameManager.SaveAreaData(areaName, -1);
 
-        LoadScene(string.Format("/{0}/lvl_01", areaName));
+        LoadScene(string.Format("{0}/lvl_1", areaName));
     }
 }

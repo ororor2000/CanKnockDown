@@ -49,9 +49,8 @@ public class ThrowBall : MonoBehaviour
                 ReadyToThrow();
             }
         }
-        else if (clearToThrow && GameManager.End != End.False)
+        else if (clearToThrow && GameManager.End.Equals(End.False))
         {
-
             if (Input.touchCount > 0)
             {
                 TouchControl();
@@ -88,14 +87,14 @@ public class ThrowBall : MonoBehaviour
             float dis = Vector3.Distance(beginning.position, end.position);
 
             float disx = end.position.x - beginning.position.x;
-            float disy = end.position.y - beginning.position.y;
+            float disy = (end.position.y - beginning.position.y);
 
             float angle = Mathf.Atan(disy / disx);
             float velocity = dis / deltaTime * Time.deltaTime;
             float vx = velocity * Mathf.Cos(angle) * Mathf.Sign(disx);
             float vy = Mathf.Abs(velocity * Mathf.Sin(angle)) * Mathf.Sign(disy);
 
-            Vector3 velocityVector = new Vector3(vx / 2, vy < 12.5 ? vy : 10, vz);
+            Vector3 velocityVector = new Vector3(vx / 2, vy < 50 ? vy / 4 : 12.5f, vz);
             ResetValues();
 
             rigid.velocity = velocityVector;
@@ -127,7 +126,7 @@ public class ThrowBall : MonoBehaviour
         if (clearToThrow && mouse_start != Vector3.zero && mouse_end != Vector3.zero && mouse_start != mouse_end)
         {
             float disx = mouse_end.x - mouse_start.x;
-            float disy = (mouse_end.y - mouse_start.y) / 1.5f;
+            float disy = (mouse_end.y - mouse_start.y);
 
             float angle = Mathf.Atan(disy / disx);
             float dis = Vector3.Distance(mouse_start, mouse_end);
@@ -136,7 +135,7 @@ public class ThrowBall : MonoBehaviour
             float vx = velocity * Mathf.Cos(angle) * Mathf.Sign(disx);
             float vy = Mathf.Abs(velocity * Mathf.Sin(angle)) * Mathf.Sign(disy);
 
-            Vector3 velocityVector = new Vector3(vx / 2, vy < 12.5 ? vy : 12.5f, vz);
+            Vector3 velocityVector = new Vector3(vx / 2, vy < 50 ? vy / 4 : 12.5f, vz);
 
             ResetValues();
 
