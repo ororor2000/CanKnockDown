@@ -147,7 +147,7 @@ public class GameManager : MonoBehaviour
         {
             SceneManager.LoadScene(sceneName);
         }
-        catch (Exception e)
+        catch (Exception)
         {
             MenuControl.LoadScene("Menu");
         }        
