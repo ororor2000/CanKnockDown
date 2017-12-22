@@ -126,20 +126,31 @@ public class GameManager : MonoBehaviour
     void LoadNextSceneInArea()
     {
         SaveLevelData();
-
-        string str = SceneManager.GetActiveScene().name.Split('_')[1];
+        string str = SceneManager.GetActiveScene().name.Split('_')[2];
 
         int l = int.Parse(str);
-        string path = "Scenes/" + area + "/lvl_" + (l + 1);
-        Debug.Log(path);
-        if (SceneManager.GetSceneByPath(path).IsValid())//Not working
+        string sceneName = area + "_lvl_" + (l + 1);
+
+        if (l + 1 > 3) //fixed lvls number per area            
         {
-            MenuControl.LoadScene(area + "/lvl_" + (l + 1));
+            //area finished      
+            EndText.text = "Finished Area";
+
+            StartCoroutine(Wait(2f, () =>
+            {
+                EndText.text = "";
+                SceneManager.LoadScene("AreasMenu");
+            }));
         }
-        else
+
+        try
         {
-            MenuControl.LoadScene("Menus/Menu");
+            SceneManager.LoadScene(sceneName);
         }
+        catch (Exception e)
+        {
+            MenuControl.LoadScene("Menu");
+        }        
 
     }
 
@@ -265,7 +276,7 @@ public class GameManager : MonoBehaviour
     public void RetryArea()
     {
         string areaName = GetCurrentAreaName();
-        MenuControl.LoadScene(areaName + "/lvl_1");
+        MenuControl.LoadScene(areaName + "_lvl_1");
     }
 
     public void RetryLevel()
