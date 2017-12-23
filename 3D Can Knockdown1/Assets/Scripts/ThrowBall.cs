@@ -17,7 +17,7 @@ public class ThrowBall : MonoBehaviour
 
     public float z;
 
-    private bool clearToThrow = true;
+    public bool clearToThrow = true;
     private Vector3 ballStartPos;
     private Rigidbody rigid;
 
