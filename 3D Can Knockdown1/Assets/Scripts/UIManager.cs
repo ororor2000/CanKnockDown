@@ -5,18 +5,24 @@ using UnityEngine;
 public class UIManager : MonoBehaviour
 {
     private GameManager gameManager;
-    private Vector3 screenSize;
+    private Vector2 screenSize;
 
-	// Use this for initialization
-	void Start ()
+    public Vector2 ScreenSize
+    {
+        get { return screenSize; }
+    }
+
+    // Use this for initialization
+    void Start()
     {
         gameManager = GameObject.FindGameObjectWithTag("Manager").GetComponent<GameManager>();
-        screenSize = new Vector3(Screen.width, Screen.height);
-	}
-	
-	// Update is called once per frame
-	void Update ()
+        screenSize = new Vector2(Screen.width, Screen.height);
+        Debug.Log(screenSize);
+    }
+
+    // Update is called once per frame
+    void Update()
     {
-		
-	}
+
+    }
 }

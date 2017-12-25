@@ -51,13 +51,16 @@ public class ThrowBall : MonoBehaviour
         }
         else if (clearToThrow && GameManager.End.Equals(End.False))
         {
-            if (Input.touchCount > 0)
+            if (!GameManager.Pause)
             {
-                TouchControl();
-            }
-            else
-            {
-                MouseControl();
+                if (Input.touchCount > 0)
+                {
+                    TouchControl();
+                }
+                else
+                {
+                    MouseControl();
+                }
             }
         }
 
@@ -84,24 +87,41 @@ public class ThrowBall : MonoBehaviour
     {
         if (clearToThrow && beginning.position != Vector2.zero && end.position != Vector2.zero && beginning.position != end.position)
         {
-            float dis = Vector3.Distance(beginning.position, end.position);
+            float disx = end.position.x - beginning.position.x; //Test new way. If not working, solution is COMMIT_SUICIDE.exe
+            float disy = end.position.y - beginning.position.y;
 
-            float disx = end.position.x - beginning.position.x;
-            float disy = (end.position.y - beginning.position.y);
+            float vx = disx / 350;
+            float vy = disy / 600;
 
-            float angle = Mathf.Atan(disy / disx);
-            float velocity = dis / deltaTime * Time.deltaTime;
-            float vx = velocity * Mathf.Cos(angle) * Mathf.Sign(disx);
-            float vy = Mathf.Abs(velocity * Mathf.Sin(angle)) * Mathf.Sign(disy);
+            Vector3 velocityVector = new Vector3(vx, vy) / deltaTime;
+            velocityVector.z = vz;
 
-            Vector3 velocityVector = new Vector3(vx / 2, vy < 50 ? vy / 4 : 12.5f, vz);
             ResetValues();
 
             rigid.velocity = velocityVector;
             rigid.isKinematic = false;
 
             clearToThrow = false;
+
+            //    float dis = Vector3.Distance(beginning.position, end.position);
+
+            //    float disx = end.position.x - beginning.position.x;
+            //    float disy = (end.position.y - beginning.position.y);
+
+            //    float angle = Mathf.Atan(disy / disx);
+            //    float velocity = dis / deltaTime * Time.deltaTime;
+            //    float vx = velocity * Mathf.Cos(angle) * Mathf.Sign(disx);
+            //    float vy = Mathf.Abs(velocity * Mathf.Sin(angle)) * Mathf.Sign(disy);
+
+            //    Vector3 velocityVector = new Vector3(vx / 2, vy < 50 ? vy / 4 : 12.5f, vz);
+            //    ResetValues();
+
+            //    rigid.velocity = velocityVector;
+            //    rigid.isKinematic = false;
+
+            //    clearToThrow = false;
         }
+
     }
 
     private void MouseControl()
@@ -118,7 +138,30 @@ public class ThrowBall : MonoBehaviour
             deltaTime = Time.time - startTime;
         }
 
-        MouseThrowControl();
+        //MouseThrowControl();
+        ThrowTest();
+    }
+
+    private void ThrowTest()
+    {
+        if (clearToThrow && mouse_start != Vector3.zero && mouse_end != Vector3.zero && mouse_start != mouse_end)
+        {
+            float disx = mouse_end.x - mouse_start.x;
+            float disy = mouse_end.y - mouse_start.y;
+
+            float vx = disx / 350;
+            float vy = disy / 600;
+
+            Vector3 velocityVector = new Vector3(vx, vy) / deltaTime;
+            velocityVector.z = vz;
+
+            ResetValues();
+
+            rigid.velocity = velocityVector;
+            rigid.isKinematic = false;
+
+            clearToThrow = false;
+        }
     }
 
     private void MouseThrowControl()

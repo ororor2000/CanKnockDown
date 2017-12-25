@@ -53,6 +53,7 @@ public class MenuControl : MonoBehaviour
         {
             panel.SetActive(false);
             bt_pasue.SetActive(true);
+            GameManager.Pause = false;
             Time.timeScale = 1;            
         }
         else
@@ -60,7 +61,7 @@ public class MenuControl : MonoBehaviour
             panel.SetActive(true);
             bt_pasue.SetActive(false);
             Time.timeScale = 0;
-
+            GameManager.Pause = true;
             StartCoroutine(Wait(2f, () => ballControl.clearToThrow = false));
         }
     }

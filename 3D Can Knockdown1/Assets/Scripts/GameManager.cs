@@ -28,6 +28,7 @@ public class GameManager : MonoBehaviour
     private static int score = 0;
     private static int ballCount = 0;
     private static End end;
+    private static bool paused = false;
     #endregion
 
     #region Scene properties
@@ -59,6 +60,12 @@ public class GameManager : MonoBehaviour
     {
         get { return end; }
         set { end = value; }
+    }
+
+    public static bool Pause
+    {
+        get { return paused; }
+        set { paused = value; }
     }
 
     void AssignObjects()
@@ -112,6 +119,8 @@ public class GameManager : MonoBehaviour
         area = GetCurrentAreaName();
         level = SceneManager.GetActiveScene().name;
 
+        Time.timeScale = 1;
+
         ScoreText.text = "Score: 0";
         BallCountText.text = "Ball Count: 0";
     }
@@ -150,7 +159,7 @@ public class GameManager : MonoBehaviour
         catch (Exception)
         {
             MenuControl.LoadScene("Menu");
-        }        
+        }
 
     }
 
@@ -193,9 +202,16 @@ public class GameManager : MonoBehaviour
 
     private void OnEnd()
     {
+
         if (end == End.Win)
         {
-            Invoke("LoadNextSceneInArea", 2f);
+            Time.timeScale = 0.25f;
+            Invoke("LoadNextSceneInArea", 2.5f);
+        }
+        else if (end == End.Loss)
+        {
+            Time.timeScale = 0.2f;
+            //Show lose screen
         }
     }
 
@@ -207,10 +223,11 @@ public class GameManager : MonoBehaviour
 
             FileStream file = File.Open(Application.persistentDataPath + '/' + area + '_' + level + ".dat", FileMode.OpenOrCreate);
 
-            leveldata = new LevelData();
-
-            leveldata.Score = score;
-            leveldata.BallCount = ballCount;
+            leveldata = new LevelData
+            {
+                Score = score,
+                BallCount = ballCount
+            };
 
             formatter.Serialize(file, leveldata); //Add check for best score
 
@@ -275,14 +292,12 @@ public class GameManager : MonoBehaviour
 
     public void RetryArea()
     {
-        string areaName = GetCurrentAreaName();
-        MenuControl.LoadScene(areaName + "_lvl_1");
+        MenuControl.LoadScene(area + "_lvl_1");
     }
 
     public void RetryLevel()
     {
-        end = End.False;
-        MenuControl.LoadScene(area + "/" + level);
+        MenuControl.LoadScene(level);
     }
 
     public void MuteSwitch()

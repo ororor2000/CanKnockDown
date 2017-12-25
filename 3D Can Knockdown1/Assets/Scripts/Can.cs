@@ -11,12 +11,10 @@ public class Can : MonoBehaviour
         fell = false;
     }
 
-    void OnCollisionEnter(Collision other)
+    void OnCollisionEnter(Collision collision)
     {
-        if (other.gameObject.tag == "Ball")
-        {
-            GetComponent<AudioSource>().Play();
-        }
+        GetComponent<AudioSource>().volume = Mathf.Abs(collision.relativeVelocity.magnitude / (collision.relativeVelocity.magnitude - 1));//Add range of sounds so it wouldnt sound the same all the time.
+        GetComponent<AudioSource>().Play();
     }
 
     void OnTriggerEnter(Collider other)
