@@ -82,7 +82,7 @@ public class ThrowBall : MonoBehaviour
 
         TouchThrowControl();
     }
-
+        
     private void TouchThrowControl()
     {
         if (clearToThrow && beginning.position != Vector2.zero && end.position != Vector2.zero && beginning.position != end.position)
@@ -90,8 +90,11 @@ public class ThrowBall : MonoBehaviour
             float disx = end.position.x - beginning.position.x; //Test new way. If not working, solution is COMMIT_SUICIDE.exe
             float disy = end.position.y - beginning.position.y;
 
-            float vx = disx / 350;
-            float vy = disy / 600;
+            float width = Screen.width;
+            float height = Screen.height;
+
+            float vx = disx / width * 3f;
+            float vy = disy / height * 3f;
 
             Vector3 velocityVector = new Vector3(vx, vy) / deltaTime;
             velocityVector.z = vz;
@@ -149,8 +152,11 @@ public class ThrowBall : MonoBehaviour
             float disx = mouse_end.x - mouse_start.x;
             float disy = mouse_end.y - mouse_start.y;
 
-            float vx = disx / 350;
-            float vy = disy / 600;
+            float width = Screen.width;
+            float height = Screen.height;
+
+            float vx = disx / width * 2;
+            float vy = disy / height * 2;
 
             Vector3 velocityVector = new Vector3(vx, vy) / deltaTime;
             velocityVector.z = vz;

@@ -14,6 +14,12 @@ public enum End
     False = 0, Win = 1, Loss = 2
 }
 
+public enum Area
+{
+    Test = 3,
+    One = 3
+}
+
 public class GameManager : MonoBehaviour
 {
     public int BallLimit;
@@ -29,10 +35,11 @@ public class GameManager : MonoBehaviour
     private static int ballCount = 0;
     private static End end;
     private static bool paused = false;
+    private Area area;
     #endregion
 
     #region Scene properties
-    private static string area;
+    private static string areaName;
     private static string level;
     private static List<GameObject> cans;
     #endregion
@@ -75,21 +82,6 @@ public class GameManager : MonoBehaviour
         EndText = GameObject.Find("EndText").GetComponent<TextMeshProUGUI>();
     }
 
-    public static void UpdateValues(int state)
-    {
-        switch (state)
-        {
-            case 0:
-                ballCount++;
-                break;
-            case 1:
-                score++;
-                break;
-            default:
-                break;
-        }
-    }
-
     private void UpdateState()
     {
         ScoreText.text = "Score: " + Score + '/' + cans.Count;
@@ -102,8 +94,15 @@ public class GameManager : MonoBehaviour
         }
         else if (ballCount == BallLimit)
         {
-            End = End.Loss;
-            EndText.text = "You Lose";
+            if (GUI.Button(new Rect(10, 10, 10, 10), "Request Another Ball"))
+            {
+                RequestExtraBall();
+            }
+            else
+            {
+                End = End.Loss;
+                EndText.text = "You Lose";
+            }
         }
     }
 
@@ -116,13 +115,24 @@ public class GameManager : MonoBehaviour
         end = End.False;
         ballCount = 0;
         score = 0;
-        area = GetCurrentAreaName();
+        areaName = GetCurrentAreaName();
+        area = GetArea();
         level = SceneManager.GetActiveScene().name;
 
         Time.timeScale = 1;
 
         ScoreText.text = "Score: 0";
         BallCountText.text = "Ball Count: 0";
+        
+    }
+
+    void RequestExtraBall()
+    {
+        AdManager.ShowAd(() => {
+            if (ballCount == 5)
+            {
+                BallLimit += 1;
+            }});
     }
 
     // Update is called once per frame
@@ -132,17 +142,28 @@ public class GameManager : MonoBehaviour
         OnEnd();
     }
 
+    Area GetArea()
+    {
+        switch (areaName)
+        {
+            case "Test":
+                return Area.Test;
+            default:
+                return Area.One;
+        }
+    }
+
     void LoadNextSceneInArea()
     {
         SaveLevelData();
         string str = SceneManager.GetActiveScene().name.Split('_')[2];
 
         int l = int.Parse(str);
-        string sceneName = area + "_lvl_" + (l + 1);
+        string sceneName = areaName + "_lvl_" + (l + 1);
 
-        if (l + 1 > 3) //fixed lvls number per area            
+        if ((l + 1) > (int)area)
         {
-            //area finished      
+            //areaName finished      
             EndText.text = "Finished Area";
 
             StartCoroutine(Wait(2f, () =>
@@ -205,12 +226,12 @@ public class GameManager : MonoBehaviour
 
         if (end == End.Win)
         {
-            Time.timeScale = 0.25f;
+            Time.timeScale = 0.45f;
             Invoke("LoadNextSceneInArea", 2.5f);
         }
         else if (end == End.Loss)
         {
-            Time.timeScale = 0.2f;
+            Time.timeScale = 0.6f;
             //Show lose screen
         }
     }
@@ -221,7 +242,7 @@ public class GameManager : MonoBehaviour
         {
             BinaryFormatter formatter = new BinaryFormatter();
 
-            FileStream file = File.Open(Application.persistentDataPath + '/' + area + '_' + level + ".dat", FileMode.OpenOrCreate);
+            FileStream file = File.Open(Application.persistentDataPath + '/' + areaName + '_' + level + ".dat", FileMode.OpenOrCreate);
 
             leveldata = new LevelData
             {
@@ -292,7 +313,7 @@ public class GameManager : MonoBehaviour
 
     public void RetryArea()
     {
-        MenuControl.LoadScene(area + "_lvl_1");
+        MenuControl.LoadScene(areaName + "_lvl_1");
     }
 
     public void RetryLevel()
