@@ -1,1 +1,1 @@
-Explosion is bad
+Ball not triggering and respawning

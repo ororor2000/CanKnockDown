@@ -31,6 +31,7 @@ public class Can : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
+        Debug.Log(other.name);
         if (other.gameObject.tag == "Surface" && !fell)
         {
             GameManager.Score++;

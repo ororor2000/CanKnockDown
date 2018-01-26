@@ -20,7 +20,7 @@ public class BallControl : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.tag == "Surface") //What is clear to throw?
+        if (other.gameObject.tag == "Surface")
         {
             GameManager.BallCount += 1;
 
