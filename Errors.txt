@@ -1,1 +1,4 @@
-Ball not triggering and respawning
+Ball not triggering and respawning.
+
+Another ball should be available after loss only.
+
