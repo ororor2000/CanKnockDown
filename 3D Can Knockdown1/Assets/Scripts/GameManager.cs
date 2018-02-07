@@ -28,6 +28,7 @@ public class GameManager : MonoBehaviour
     private TextMeshProUGUI ScoreText;
     private TextMeshProUGUI BallCountText;
     private TextMeshProUGUI EndText;
+    private Button ExtraBallButton;
     #endregion
 
     #region Values
@@ -42,6 +43,21 @@ public class GameManager : MonoBehaviour
     private static string areaName;
     private static string level;
     private static List<GameObject> cans;
+    #endregion
+
+    #region Screen properties
+    private float screenworldwidth;
+    private float screenworldheight;
+
+    public float WorldWidth
+    {
+        get { return screenworldwidth; }
+        set { screenworldwidth = value; }
+    }
+    public float WorldHeight
+    {
+        get { return screenworldheight; }
+    }
     #endregion
 
     public Button retry_bt;
@@ -80,11 +96,17 @@ public class GameManager : MonoBehaviour
         ScoreText = GameObject.Find("ScoreText").GetComponent<TextMeshProUGUI>();
         BallCountText = GameObject.Find("BallCountText").GetComponent<TextMeshProUGUI>();
         EndText = GameObject.Find("EndText").GetComponent<TextMeshProUGUI>();
+        ExtraBallButton = GameObject.Find("ExtraBall").GetComponent<Button>();
+        ExtraBallButton.gameObject.SetActive(false);
     }
 
     private void UpdateState()
     {
-        ScoreText.text = "Score: " + Score + '/' + cans.Count;
+        if (ScoreText != null)
+        {
+            ScoreText.text = "Score: " + Score + "/" + cans.Count;
+        }
+
         BallCountText.text = "Ball Count: " + BallCount + "/" + BallLimit;
         if (score == cans.Count)
         {
@@ -94,15 +116,10 @@ public class GameManager : MonoBehaviour
         }
         else if (ballCount == BallLimit)
         {
-            if (GUI.Button(new Rect(10, 10, 10, 10), "Request Another Ball"))
-            {
-                RequestExtraBall();
-            }
-            else
-            {
-                End = End.Loss;
-                EndText.text = "You Lose";
-            }
+
+            End = End.Loss;
+            EndText.text = "You Lose";
+            ExtraBallButton.gameObject.SetActive(true);
         }
     }
 
@@ -123,21 +140,31 @@ public class GameManager : MonoBehaviour
 
         ScoreText.text = "Score: 0";
         BallCountText.text = "Ball Count: 0";
-        
+
+        screenworldwidth = Camera.main.ScreenToWorldPoint(new Vector3((Screen.width / 2), 0)).x * 2;
+
+        Debug.Log(screenworldwidth);
+
     }
+
+
 
     void RequestExtraBall()
     {
-        AdManager.ShowAd(() => {
+        /*AdManager.ShowAd(() =>
+        {
             if (ballCount == 5)
             {
                 BallLimit += 1;
-            }});
+            }
+        });*/
+        Debug.Log("Extra ball requested");
     }
 
     // Update is called once per frame
     void Update()
     {
+
         UpdateState();
         OnEnd();
     }

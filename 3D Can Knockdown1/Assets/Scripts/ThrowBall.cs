@@ -13,10 +13,6 @@ public class ThrowBall : MonoBehaviour
 
     private bool respawning;
 
-    public float vz;
-
-    public float z;
-
     public bool clearToThrow = true;
     private Vector3 ballStartPos;
     private Rigidbody rigid;
@@ -43,7 +39,7 @@ public class ThrowBall : MonoBehaviour
     {
         if (respawning)
         {
-            transform.position = new Vector3(transform.position.x, transform.position.y, z);
+            transform.position = new Vector3(transform.position.x, transform.position.y, ballStartPos.z);
             if (transform.position.x > 0)
             {
                 ReadyToThrow();
@@ -82,48 +78,9 @@ public class ThrowBall : MonoBehaviour
 
         TouchThrowControl();
     }
-        
+
     private void TouchThrowControl()
     {
-        if (clearToThrow && beginning.position != Vector2.zero && end.position != Vector2.zero && beginning.position != end.position)
-        {
-            float disx = end.position.x - beginning.position.x; //Test new way. If not working, solution is COMMIT_SUICIDE.exe
-            float disy = end.position.y - beginning.position.y;
-
-            float width = Screen.width;
-            float height = Screen.height;
-
-            float vx = disx / width * 3f;
-            float vy = disy / height * 3f;
-
-            Vector3 velocityVector = new Vector3(vx, vy) / deltaTime;
-            velocityVector.z = vz;
-
-            ResetValues();
-
-            rigid.velocity = velocityVector;
-            rigid.isKinematic = false;
-
-            clearToThrow = false;
-
-            //    float dis = Vector3.Distance(beginning.position, end.position);
-
-            //    float disx = end.position.x - beginning.position.x;
-            //    float disy = (end.position.y - beginning.position.y);
-
-            //    float angle = Mathf.Atan(disy / disx);
-            //    float velocity = dis / deltaTime * Time.deltaTime;
-            //    float vx = velocity * Mathf.Cos(angle) * Mathf.Sign(disx);
-            //    float vy = Mathf.Abs(velocity * Mathf.Sin(angle)) * Mathf.Sign(disy);
-
-            //    Vector3 velocityVector = new Vector3(vx / 2, vy < 50 ? vy / 4 : 12.5f, vz);
-            //    ResetValues();
-
-            //    rigid.velocity = velocityVector;
-            //    rigid.isKinematic = false;
-
-            //    clearToThrow = false;
-        }
 
     }
 
@@ -147,52 +104,7 @@ public class ThrowBall : MonoBehaviour
 
     private void ThrowTest()
     {
-        if (clearToThrow && mouse_start != Vector3.zero && mouse_end != Vector3.zero && mouse_start != mouse_end)
-        {
-            float disx = mouse_end.x - mouse_start.x;
-            float disy = mouse_end.y - mouse_start.y;
 
-            float width = Screen.width;
-            float height = Screen.height;
-
-            float vx = disx / width * 2;
-            float vy = disy / height * 2;
-
-            Vector3 velocityVector = new Vector3(vx, vy) / deltaTime;
-            velocityVector.z = vz;
-
-            ResetValues();
-
-            rigid.velocity = velocityVector;
-            rigid.isKinematic = false;
-
-            clearToThrow = false;
-        }
-    }
-
-    private void MouseThrowControl()
-    {
-        if (clearToThrow && mouse_start != Vector3.zero && mouse_end != Vector3.zero && mouse_start != mouse_end)
-        {
-            float disx = mouse_end.x - mouse_start.x;
-            float disy = (mouse_end.y - mouse_start.y);
-
-            float angle = Mathf.Atan(disy / disx);
-            float dis = Vector3.Distance(mouse_start, mouse_end);
-            float velocity = dis / deltaTime * Time.deltaTime;
-
-            float vx = velocity * Mathf.Cos(angle) * Mathf.Sign(disx);
-            float vy = Mathf.Abs(velocity * Mathf.Sin(angle)) * Mathf.Sign(disy);
-
-            Vector3 velocityVector = new Vector3(vx / 2, vy < 50 ? vy / 4 : 12.5f, vz);
-
-            ResetValues();
-
-            rigid.velocity = velocityVector;
-            rigid.isKinematic = false;
-
-            clearToThrow = false;
-        }
     }
 
     public void RespawnBall()

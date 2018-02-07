@@ -5,11 +5,22 @@ using UnityEngine;
 
 public class BallControl : MonoBehaviour
 {
+    private GameManager game;
+
     private bool clearToThrow;
 
     void Start()
     {
+        game = GameObject.FindGameObjectWithTag("Manager").GetComponent<GameManager>();
         clearToThrow = true;
+    }
+
+    void Update()
+    {
+        /*if (Input.GetTouch(0).phase == TouchPhase.Began && clearToThrow)
+        {
+            transform.position = new Vector3(TouchToWorld(Input.GetTouch(0).position), transform.position.y, transform.position.z);
+        }*/
     }
 
     public bool ClearToThrow
@@ -18,10 +29,18 @@ public class BallControl : MonoBehaviour
         set { clearToThrow = value; }
     }
 
+    private float TouchToWorld(Vector3 position)
+    {
+        float screen = Screen.width;
+
+        return (position.x * game.WorldWidth / screen) - (game.WorldWidth / 2);
+    }
+
     void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.tag == "Surface")
         {
+            Debug.Log("Fell");
             GameManager.BallCount += 1;
 
             StartCoroutine(Wait(2, () =>
@@ -30,6 +49,8 @@ public class BallControl : MonoBehaviour
             }
             ));
         }
+        Debug.Log(other.name);
+
     }
 
     void OnCollisionEnter(Collision other)
@@ -45,6 +66,4 @@ public class BallControl : MonoBehaviour
         yield return new WaitForSeconds(sec);
         action();
     }
-
-
 }
